@@ -34,6 +34,18 @@ class Invoices implements Source
 
     // --------------------------------------------------------------------------
 
+    /**
+     * Returns the source's extended description, HTML allowed, optional
+     *
+     * @return string
+     */
+    public function getDescriptionExtended(): string
+    {
+        return '';
+    }
+
+    // --------------------------------------------------------------------------
+
     public function getOptions(): array
     {
         $oInvoiceModel = Factory::model('Invoice', Constants::MODULE_SLUG);
