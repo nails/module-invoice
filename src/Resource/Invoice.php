@@ -59,7 +59,7 @@ class Invoice extends Entity
     /**
      * The customer (expandable field)
      *
-     * @var Customer
+     * @var null|Customer
      */
     public $customer;
 
@@ -366,11 +366,11 @@ class Invoice extends Entity
     /**
      * Returns the invoice's customer object
      *
-     * @return Customer
+     * @return null|Customer
      * @throws FactoryException
      * @throws ModelException
      */
-    public function customer(): Customer
+    public function customer(): ?Customer
     {
         if (empty($this->customer) && !empty($this->customer_id)) {
             /** @var \Nails\Invoice\Model\Customer $oModel */
