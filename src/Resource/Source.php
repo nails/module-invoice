@@ -188,7 +188,7 @@ class Source extends Entity
      *
      * @return bool
      */
-    public function isExpired(DateTime $oWhen = null): bool
+    public function isExpired(?DateTime $oWhen = null): bool
     {
         if (!$this->expiry) {
             return false;

@@ -94,7 +94,7 @@ class RefundRequest extends RequestBase
      * @throws ModelException
      * @throws RequestException
      */
-    public function execute(int $iAmount = null)
+    public function execute(?int $iAmount = null)
     {
         $iAmount  = $iAmount ?? $this->getAmount();
         $oPayment = $this->getPayment();

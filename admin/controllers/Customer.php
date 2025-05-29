@@ -135,7 +135,7 @@ class Customer extends DefaultController
 
     // --------------------------------------------------------------------------
 
-    protected function loadEditViewData(\Nails\Common\Resource $oItem = null): void
+    protected function loadEditViewData(?\Nails\Common\Resource $oItem = null): void
     {
         /** @var Input $oInput */
         $oInput = Factory::service('Input');
@@ -198,7 +198,7 @@ class Customer extends DefaultController
     protected function afterCreateAndEdit(
         $sMode,
         \Nails\Common\Resource $oNewItem,
-        \Nails\Common\Resource $oOldItem = null
+        ?\Nails\Common\Resource $oOldItem = null
     ): void {
 
         parent::afterCreateAndEdit($sMode, $oNewItem, $oOldItem);

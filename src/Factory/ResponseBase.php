@@ -217,8 +217,8 @@ class ResponseBase
      * @throws ResponseException
      */
     public function setStatusFailed(
-        string $sReasonMsg = null,
-        string $sReasonCode = null,
+        ?string $sReasonMsg = null,
+        ?string $sReasonCode = null,
         string $sUserFeedback = ''
     ): ResponseBase {
 
