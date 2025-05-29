@@ -801,7 +801,7 @@ class Invoice extends Base
         $oFormValidation->set_message('is_natural', lang('fv_is_natural'));
         $oFormValidation->set_message('valid_email', lang('fv_valid_email'));
 
-        return $oFormValidation->run($this);
+        return $oFormValidation->run(module: $this);
     }
 
     // --------------------------------------------------------------------------
