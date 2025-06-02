@@ -116,8 +116,11 @@ class Customer extends Base
     {
         $aFields = parent::describeFields($sTable);
 
-        $aFields['email']->validation[]         = FormValidation::RULE_VALID_EMAIL;
-        $aFields['billing_email']->validation[] = FormValidation::RULE_VALID_EMAIL;
+        $aFields['email']
+            ->addValidation(FormValidation::RULE_VALID_EMAIL);
+
+        $aFields['billing_email']
+            ->addValidation(FormValidation::RULE_VALID_EMAIL);
 
         return $aFields;
     }
