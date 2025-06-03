@@ -1,6 +1,7 @@
 {
     "name": "nails/module-invoice",
-    "keywords": [
+    "keywords":
+    [
         "Nails",
         "Shed Collective",
         "CodeIgniter",
@@ -11,7 +12,8 @@
     "homepage": "http://nailsapp.co.uk/modules/invoice",
     "description": "This is the Invoice module for nails, it provides an interface for raising invoices and accepting payment from customers.",
     "license": "MIT",
-    "authors": [
+    "authors":
+    [
         {
             "name": "Pablo de la Pena",
             "email": "p@nailsapp.co.uk",
@@ -19,59 +21,75 @@
             "role": "Developer"
         }
     ],
-    "support": {
+    "support":
+    {
         "email": "hello@nailsapp.co.uk"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "require": {
+    "require":
+    {
         "ext-json": "*",
-        "nails/common": "dev-feature/pre-new-admin-ci-php8",
-        "nails/module-address": "dev-feature/pre-new-admin-ci-php8",
-        "nails/module-admin": "dev-feature/pre-new-admin-ci-php8",
-        "nails/module-auth": "dev-feature/pre-new-admin-ci-php8",
-        "nails/module-currency": "dev-feature/pre-new-admin-ci-php8",
-        "nails/module-pdf": "dev-feature/pre-new-admin-ci-php8",
-        "nails/skin-invoice-classic": "dev-feature/pre-new-admin-ci-php8"
+        "nails/common": "dev-feature/pre-new-admin",
+        "nails/module-address": "dev-feature/pre-new-admin",
+        "nails/module-admin": "dev-feature/pre-new-admin",
+        "nails/module-auth": "dev-feature/pre-new-admin",
+        "nails/module-currency": "dev-feature/pre-new-admin",
+        "nails/module-pdf": "dev-feature/pre-new-admin",
+        "nails/skin-invoice-classic": "dev-feature/pre-new-admin"
     },
-    "require-dev": {
+    "require-dev":
+    {
         "phpunit/phpunit": "9.*",
         "phpstan/phpstan": "1.*"
     },
-    "scripts": {
+    "scripts":
+    {
         "test": "./vendor/bin/phpunit",
         "analyse": "./vendor/bin/phpstan analyse -c .phpstan/config.neon"
     },
-    "autoload": {
-        "psr-4": {
+    "autoload":
+    {
+        "psr-4":
+        {
             "Nails\\Invoice\\": "src/"
         }
     },
-    "suggest": {
+    "suggest":
+    {
         "nails/driver-invoice-stripe": "Accept payments using Stripe",
         "nails/driver-invoice-gocardless": "Accept payments using GoCardless",
         "nails/driver-invoice-worldpay": "Accept payments using WorldPay",
         "nails/driver-invoice-authorize-net": "Accept payments using Authorize.NET"
     },
-    "extra": {
-        "nails": {
+    "extra":
+    {
+        "nails":
+        {
             "moduleName": "invoice",
             "type": "module",
             "namespace": "Nails\\Invoice\\",
-            "data": {
-                "nails/module-admin": {
-                    "autoload": {
-                        "assets": {
-                            "js": [
+            "data":
+            {
+                "nails/module-admin":
+                {
+                    "autoload":
+                    {
+                        "assets":
+                        {
+                            "js":
+                            [
                                 "admin.min.js"
                             ],
-                            "css": [
+                            "css":
+                            [
                                 "admin.min.css"
                             ]
                         }
                     }
                 },
-                "nails/module-api": {
+                "nails/module-api":
+                {
                     "namespace": "invoice"
                 }
             }
