@@ -37,7 +37,7 @@ abstract class ArbitraryData extends Resource
      *
      * @return array
      */
-    public function toSortedArray(array $aArray = null): array
+    public function toSortedArray(?array $aArray = null): array
     {
         foreach (($aArray ?? get_object_vars($this)) as $sProp => $mValue) {
             $aArray[$sProp] = is_object($mValue) || is_array($mValue)

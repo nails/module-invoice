@@ -922,7 +922,7 @@ class Invoice
      * @throws RequestException
      * @throws CurrencyException
      */
-    public function charge(ChargeRequest $oChargeRequest, string $sDescription = null)
+    public function charge(ChargeRequest $oChargeRequest, ?string $sDescription = null)
     {
         if (empty($this->iId)) {
             $oInvoice = $this->save();

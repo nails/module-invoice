@@ -120,7 +120,7 @@ interface Payment
         string $sSuccessUrl,
         string $sErrorUrl,
         bool $bCustomerPresent,
-        Resource\Source $oSource = null
+        ?Resource\Source $oSource = null
     ): ChargeResponse;
 
     // --------------------------------------------------------------------------

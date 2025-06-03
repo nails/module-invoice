@@ -466,7 +466,7 @@ class Invoice extends Base
      * @throws InvoiceException
      * @throws ModelException
      */
-    protected function prepareInvoice(array &$aData, int $iInvoiceId = null): void
+    protected function prepareInvoice(array &$aData, ?int $iInvoiceId = null): void
     {
         //  Always has an uppercase state
         if (array_key_exists('state', $aData)) {
@@ -804,7 +804,7 @@ class Invoice extends Base
      *
      * @return bool
      */
-    public function send(int $iInvoiceId, string $sEmailOverride = null): bool
+    public function send(int $iInvoiceId, ?string $sEmailOverride = null): bool
     {
         try {
 
