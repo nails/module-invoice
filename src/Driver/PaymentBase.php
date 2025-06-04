@@ -142,7 +142,7 @@ abstract class PaymentBase extends Base implements Payment
     protected function setChargeRequestFields(
         ChargeRequest $oChargeRequest,
         array $aData,
-        array $aFields = null
+        ?array $aFields = null
     ) {
 
         if (is_null($aFields)) {

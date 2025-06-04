@@ -353,7 +353,7 @@ class Invoice extends Entity
      * @return ChargeResponse
      * @throws InvoiceException
      */
-    public function charge(ChargeRequest $oChargeRequest, string $sDescription = null)
+    public function charge(ChargeRequest $oChargeRequest, ?string $sDescription = null)
     {
         return $oChargeRequest
             ->setInvoice($this)
