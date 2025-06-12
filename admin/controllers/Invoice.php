@@ -67,7 +67,7 @@ class Invoice extends Base
      * @return array|Nav
      * @throws FactoryException
      */
-    public static function announce()
+    public static function announce(): Nav|array|null
     {
         if (userHasPermission('admin:invoice:invoice:manage')) {
             /** @var Nav $oNavGroup */
@@ -75,8 +75,8 @@ class Invoice extends Base
                 ->setLabel('Invoices &amp; Payments')
                 ->setIcon('fa-credit-card')
                 ->addAction('Manage Invoices', 'index', [], 0);
-            return $oNavGroup;
         }
+        return $oNavGroup ?? null;
     }
 
     // --------------------------------------------------------------------------
