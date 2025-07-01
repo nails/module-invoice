@@ -12,64 +12,38 @@
 
 namespace Nails\Invoice\Controller;
 
-use Nails\Common\Exception\NailsException;
+use Nails\Common\Exception\AssetException;
+use Nails\Common\Exception\FactoryException;
 use Nails\Common\Service\Asset;
 use Nails\Factory;
 use Nails\Invoice\Constants;
-
-// --------------------------------------------------------------------------
-
-/**
- * Allow the app to add functionality, if needed
- */
-if (!class_exists('\App\Invoice\Controller\Base')) {
-    abstract class BaseMiddle extends \App\Controller\Base
-    {
-    }
-} else {
-    abstract class BaseMiddle extends \App\Invoice\Controller\Base
-    {
-        public function __construct()
-        {
-            /** @phpstan-ignore-next-line */
-            if (!classExtends(parent::class, \App\Controller\Base::class)) {
-                throw new NailsException(sprintf(
-                    'Class %s must extend %s',
-                    /** @phpstan-ignore-next-line */
-                    parent::class,
-                    \App\Controller\Base::class
-                ));
-            }
-            /** @phpstan-ignore-next-line */
-            parent::__construct();
-        }
-    }
-}
-
-// --------------------------------------------------------------------------
 
 /**
  * Class Base
  *
  * @package Nails\Invoice\Controller
  */
-abstract class Base extends BaseMiddle
+abstract class Base extends \Nails\Common\Controller\Base
 {
     /**
-     * Loads Invoice styles if supplied view does not exist
+     * Loads Invoice styles if the supplied view does not exist
      *
      * @param string $sView The view to test
+     *
+     * @throws AssetException
+     * @throws FactoryException
      */
-    protected function loadStyles($sView)
+    protected function loadStyles(string $sView)
     {
-        //  Test if a view has been provided by the app
+        //  Test if the app has provided a view
         if (!is_file($sView)) {
             /** @var Asset $oAsset */
             $oAsset = Factory::service('Asset');
-            $oAsset->clear();
-            $oAsset->load('https://code.jquery.com/jquery-2.2.4.min.js');
-            $oAsset->load('nails.min.css', \Nails\Common\Constants::MODULE_SLUG);
-            $oAsset->load('invoice.pay.min.css', Constants::MODULE_SLUG);
+            $oAsset
+                ->clear()
+                ->load('https://code.jquery.com/jquery-2.2.4.min.js')
+                ->load('nails.min.css', \Nails\Common\Constants::MODULE_SLUG)
+                ->load('invoice.pay.min.css', Constants::MODULE_SLUG);
         }
     }
 }
