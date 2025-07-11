@@ -48,12 +48,15 @@ $aAlertConf = [
     }
     ?>
     <div class="panel shakeable">
-        <h1 class="panel__header text-center">
-            Checkout
-        </h1>
-        <?=form_open($sFormUrl, 'id="js-invoice-main-form"')?>
+        <div class="panel__header">
+            <h1 class="panel__title text-center">
+                Checkout
+            </h1>
+        </div>
         <div class="panel__body">
             <?php
+
+            echo form_open($sFormUrl, 'id="js-invoice-main-form" class="form"');
 
             foreach ($oUserFeedback->getTypes() as $sType) {
 
@@ -75,7 +78,7 @@ $aAlertConf = [
                 <?php
             } else {
                 ?>
-                <table class="table" id="js-invoice-main-form-line-items">
+                <table class="table table--striped" id="js-invoice-main-form-line-items">
                     <tbody>
                         <?php
                         foreach ($oInvoice->items->data as $oItem) {
@@ -193,7 +196,7 @@ $aAlertConf = [
                                 $sFieldPlaceholder = '';
                                 $sFieldDefault     = activeUser('first_name, last_name');
                                 $sFieldAttr        = implode(' ', [
-                                    'class="js-invoice-cc-name"',
+                                    'class="form__control js-invoice-cc-name"',
                                     'id="input-' . $sFieldKey . '"',
                                     'placeholder="' . $sFieldPlaceholder . '"',
                                     'autocomplete="on"',
@@ -201,10 +204,10 @@ $aAlertConf = [
                                 ]);
 
                                 ?>
-                                <div class="form__group <?=form_error($sFieldKey) ? 'has-error' : ''?>">
-                                    <label for="input-<?=$sFieldKey?>"><?=$sFieldLabel?></label>
+                                <div class="form__group">
+                                    <label class="form__label" for="input-<?=$sFieldKey?>"><?=$sFieldLabel?></label>
                                     <?=form_text($sFieldKey, set_value($sFieldKey, $sFieldDefault), $sFieldAttr)?>
-                                    <?=form_error($sFieldKey, '<p class="form__error">', '</p>')?>
+                                    <?=form_error($sFieldKey, '<p class="form__feedback form__feedback--invalid">', '</p>')?>
                                 </div>
                                 <?php
 
@@ -213,7 +216,7 @@ $aAlertConf = [
                                 $sFieldPlaceholder = '•••• •••• •••• ••••';
                                 $sFieldDefault     = '';
                                 $sFieldAttr        = implode(' ', [
-                                    'class="js-invoice-cc-num"',
+                                    'class="form__control js-invoice-cc-num"',
                                     'id="input-' . $sFieldKey . '"',
                                     'placeholder="' . $sFieldPlaceholder . '"',
                                     'autocomplete="on"',
@@ -222,10 +225,10 @@ $aAlertConf = [
                                 ]);
 
                                 ?>
-                                <div class="form__group <?=form_error($sFieldKey) ? 'has-error' : ''?>">
-                                    <label for="input-<?=$sFieldKey?>"><?=$sFieldLabel?></label>
+                                <div class="form__group">
+                                    <label class="form__label" for="input-<?=$sFieldKey?>"><?=$sFieldLabel?></label>
                                     <?=form_tel($sFieldKey, set_value($sFieldKey, $sFieldDefault), $sFieldAttr)?>
-                                    <?=form_error($sFieldKey, '<p class="form__error">', '</p>')?>
+                                    <?=form_error($sFieldKey, '<p class="form__feedback form__feedback--invalid">', '</p>')?>
                                 </div>
                                 <div class="form__row">
                                     <?php
@@ -235,7 +238,7 @@ $aAlertConf = [
                                     $sFieldPlaceholder = '•• / ••';
                                     $sFieldDefault     = '';
                                     $sFieldAttr        = implode(' ', [
-                                        'class="js-invoice-cc-exp"',
+                                        'class="form__control js-invoice-cc-exp"',
                                         'id="input-' . $sFieldKey . '"',
                                         'placeholder="' . $sFieldPlaceholder . '"',
                                         'autocomplete="on"',
@@ -244,10 +247,10 @@ $aAlertConf = [
                                     ]);
 
                                     ?>
-                                    <div class="form__group form__group--half <?=form_error($sFieldKey) ? 'has-error' : ''?>">
-                                        <label for="input-<?=$sFieldKey?>"><?=$sFieldLabel?></label>
+                                    <div class="form__group form__group--half">
+                                        <label class="form__label" for="input-<?=$sFieldKey?>"><?=$sFieldLabel?></label>
                                         <?=form_tel($sFieldKey, set_value($sFieldKey, $sFieldDefault), $sFieldAttr)?>
-                                        <?=form_error($sFieldKey, '<p class="form__error">', '</p>')?>
+                                        <?=form_error($sFieldKey, '<p class="form__feedback form__feedback--invalid">', '</p>')?>
                                     </div>
                                     <?php
 
@@ -256,7 +259,7 @@ $aAlertConf = [
                                     $sFieldPlaceholder = '•••';
                                     $sFieldDefault     = '';
                                     $sFieldAttr        = implode(' ', [
-                                        'class="js-invoice-cc-cvc"',
+                                        'class="form__control js-invoice-cc-cvc"',
                                         'id="input-' . $sFieldKey . '"',
                                         'placeholder="' . $sFieldPlaceholder . '"',
                                         'autocomplete="on"',
@@ -265,10 +268,10 @@ $aAlertConf = [
                                     ]);
 
                                     ?>
-                                    <div class="form__group form__group--half <?=form_error($sFieldKey) ? 'has-error' : ''?>">
-                                        <label for="input-<?=$sFieldKey?>"><?=$sFieldLabel?></label>
+                                    <div class="form__group form__group--half">
+                                        <label class="form__label" for="input-<?=$sFieldKey?>"><?=$sFieldLabel?></label>
                                         <?=form_tel($sFieldKey, set_value($sFieldKey, $sFieldDefault), $sFieldAttr)?>
-                                        <?=form_error($sFieldKey, '<p class="form__error">', '</p>')?>
+                                        <?=form_error($sFieldKey, '<p class="form__feedback form__feedback--invalid">', '</p>')?>
                                     </div>
                                 </div>
                                 <?php
@@ -300,8 +303,10 @@ $aAlertConf = [
                                     ];
 
                                     ?>
-                                    <div class="form__group <?=form_error($sKey) ? 'has-error' : ''?>">
-                                        <label for="<?=$sId?>"><?=$sLabel?></label>
+                                    <div class="form__group">
+                                        <label class="form__label" for="<?=$sId?>">
+                                            <?=$sLabel?>
+                                        </label>
                                         <?php
 
                                         switch ($sType) {
@@ -313,7 +318,7 @@ $aAlertConf = [
                                                     $sKey,
                                                     $aOptions,
                                                     set_value($sKey),
-                                                    implode(' ', $aAttr)
+                                                    implode(' ', $aAttr + ['class="form__control form__control--select"'])
                                                 );
                                                 break;
 
@@ -321,7 +326,7 @@ $aAlertConf = [
                                                 echo form_password(
                                                     $sKey,
                                                     null,
-                                                    implode(' ', $aAttr)
+                                                    implode(' ', $aAttr + ['class="form__control"'])
                                                 );
                                                 break;
 
@@ -330,12 +335,12 @@ $aAlertConf = [
                                                 echo form_input(
                                                     $sKey,
                                                     set_value($sKey),
-                                                    implode(' ', $aAttr)
+                                                    implode(' ', $aAttr + ['class="form__control"'])
                                                 );
                                                 break;
                                         }
                                         ?>
-                                        <?=form_error($sKey, '<p class="form__error">', '</p>')?>
+                                        <?=form_error($sKey, '<p class="form__feedback form__feedback--invalid">', '</p>')?>
                                     </div>
                                     <?php
                                 }
@@ -346,21 +351,20 @@ $aAlertConf = [
                     }
                     ?>
                 </div>
-                <hr>
-                <p>
+                <div class="form__action">
                     <button type="submit" class="btn btn--block btn--primary btn--disabled" id="js-invoice-pay-now">
                         Choose a Payment Method
                     </button>
-                </p>
-                <p class="text-center">
-                    <a href="<?=$sUrlCancel?>" class="btn btn--link" id="js-invoice-cancel">
+                    <a href="<?=$sUrlCancel?>" class="btn btn--block btn--link" id="js-invoice-cancel">
                         Cancel payment
                     </a>
-                </p>
+                </div>
                 <?php
             }
+
+            echo form_close();
+
             ?>
         </div>
-        <?=form_close()?>
     </div>
 </div>
