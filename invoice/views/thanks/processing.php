@@ -1,4 +1,4 @@
-<div class="nails-invoice paid u-center-screen" id="js-invoice">
+<div class="nails-invoice paid center-screen" id="js-invoice">
     <?php
     $sLogo = logoDiscover();
     if ($sLogo) {
@@ -10,9 +10,11 @@
     }
     ?>
     <div class="panel">
-        <h1 class="panel__header text-center">
-            Invoice <?=$oPayment->invoice->ref?>
-        </h1>
+        <div class="panel__header">
+            <h1 class="panel__title text-center">
+                Invoice <?=$oPayment->invoice->ref?>
+            </h1>
+        </div>
         <div class="panel__body text-center">
             <p>Thank you for your payment of <?=$oPayment->amount->formatted?>.</p>
             <p>Your payment reference is <strong><?=$oPayment->ref?></strong>.</p>
@@ -24,8 +26,6 @@
                 <a href="<?=$oPayment->urls->success?>" class="btn btn--block btn--primary">
                     Continue
                 </a>
-            </p>
-            <p>
                 <a href="<?=$oPayment->invoice->urls->download?>" class="btn btn--block">
                     Download Invoice
                 </a>

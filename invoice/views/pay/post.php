@@ -5,7 +5,7 @@
  * @var array  $aFormData
  */
 ?>
-<div class="nails-invoice post u-center-screen">
+<div class="nails-invoice post center-screen">
     <div class="panel">
         <div class="panel__body text-center">
             <p><?=$sMessage?></p>

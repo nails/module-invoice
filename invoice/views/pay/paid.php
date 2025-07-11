@@ -1,4 +1,4 @@
-<div class="nails-invoice paid u-center-screen" id="js-invoice">
+<div class="nails-invoice paid center-screen" id="js-invoice">
     <?php
     $sLogo = logoDiscover();
     if ($sLogo) {
@@ -10,9 +10,11 @@
     }
     ?>
     <div class="panel">
-        <h1 class="panel__header text-center">
-            Invoice <?=$oInvoice->ref?>
-        </h1>
+        <div class="panel__header">
+            <h1 class="panel__title text-center">
+                Invoice <?=$oInvoice->ref?>
+            </h1>
+        </div>
         <div class="panel__body text-center">
             <p class="alert alert--success">This invoice has been paid.</p>
             <p>Payment was received <?=$oInvoice->paid->formatted?>, many thanks for your business.</p>
