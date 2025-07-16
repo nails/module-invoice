@@ -13,6 +13,7 @@ use Nails\Address\Resource\Address;
 use Nails\Common\Exception\FactoryException;
 use Nails\Common\Exception\ModelException;
 use Nails\Common\Helper\Model\Expand;
+use Nails\Common\Model\Base;
 use Nails\Common\Resource\Date;
 use Nails\Common\Resource\DateTime;
 use Nails\Common\Resource\Entity;
@@ -27,6 +28,7 @@ use Nails\Invoice\Resource\Invoice\Item;
 use Nails\Invoice\Resource\Invoice\State;
 use Nails\Invoice\Resource\Invoice\Totals;
 use Nails\Invoice\Resource\Invoice\Urls;
+use stdClass;
 
 /**
  * Class Invoice
@@ -236,14 +238,12 @@ class Invoice extends Entity
     /**
      * Invoice constructor.
      *
-     * @param array $mObj
-     *
      * @throws FactoryException
      * @throws CurrencyException
      */
-    public function __construct($mObj = [])
+    public function __construct(self|stdClass|array $resource = [], ?Base $model = null)
     {
-        parent::__construct($mObj);
+        parent::__construct($resource, $model);
 
         // --------------------------------------------------------------------------
 
@@ -255,17 +255,17 @@ class Invoice extends Entity
             'InvoiceState',
             Constants::MODULE_SLUG,
             (object) [
-                'id'    => $mObj->state,
-                'label' => $aStates[$mObj->state],
+                'id'    => $entity->state,
+                'label' => $aStates[$entity->state],
             ]
         );
 
         // --------------------------------------------------------------------------
 
         //  Dates and DateTimes
-        $this->dated = Factory::resource('Date', null, (object) ['raw' => $mObj->dated]);
-        $this->due   = Factory::resource('Date', null, (object) ['raw' => $mObj->due]);
-        $this->paid  = Factory::resource('DateTime', null, (object) ['raw' => $mObj->paid]);
+        $this->dated = Factory::resource('Date', null, (object) ['raw' => $entity->dated]);
+        $this->due   = Factory::resource('Date', null, (object) ['raw' => $entity->due]);
+        $this->paid  = Factory::resource('DateTime', null, (object) ['raw' => $entity->paid]);
 
         // --------------------------------------------------------------------------
 
@@ -281,7 +281,7 @@ class Invoice extends Entity
             $this->is_overdue   = $this->due->isPast();
         }
 
-        $this->has_processing_payments = $mObj->processing_payments > 0;
+        $this->has_processing_payments = $entity->processing_payments > 0;
         unset($this->processing_payments);
 
         // --------------------------------------------------------------------------
@@ -289,7 +289,7 @@ class Invoice extends Entity
         //  Currency
         /** @var \Nails\Currency\Service\Currency $oCurrencyService */
         $oCurrencyService = Factory::service('Currency', \Nails\Currency\Constants::MODULE_SLUG);
-        $this->currency   = $oCurrencyService->getByIsoCode($mObj->currency);
+        $this->currency   = $oCurrencyService->getByIsoCode($entity->currency);
 
         // --------------------------------------------------------------------------
 
@@ -299,11 +299,11 @@ class Invoice extends Entity
             Constants::MODULE_SLUG,
             (object) [
                 'currency'   => $this->currency,
-                'sub'        => (int) $mObj->sub_total,
-                'tax'        => (int) $mObj->tax_total,
-                'grand'      => (int) $mObj->grand_total,
-                'paid'       => (int) $mObj->paid_total,
-                'processing' => (int) $mObj->processing_total,
+                'sub'        => (int) $entity->sub_total,
+                'tax'        => (int) $entity->tax_total,
+                'grand'      => (int) $entity->grand_total,
+                'paid'       => (int) $entity->paid_total,
+                'processing' => (int) $entity->processing_total,
             ]
         );
 

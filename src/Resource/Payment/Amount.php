@@ -42,14 +42,12 @@ class Amount extends Resource
     /**
      * Amount constructor.
      *
-     * @param array $mObj
-     *
      * @throws FactoryException
      * @throws CurrencyException
      */
-    public function __construct($mObj = [])
+    public function __construct(self|\stdClass|array $resource = [])
     {
-        parent::__construct($mObj);
+        parent::__construct($resource);
 
         /** @var Currency $oCurrency */
         $oCurrency = Factory::service('Currency', Constants::MODULE_SLUG);

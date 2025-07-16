@@ -10,6 +10,7 @@
 namespace Nails\Invoice\Resource\Invoice;
 
 use Nails\Common\Exception\FactoryException;
+use Nails\Common\Model\Base;
 use Nails\Common\Resource\Entity;
 use Nails\Currency\Exception\CurrencyException;
 use Nails\Currency\Service\Currency;
@@ -17,6 +18,7 @@ use Nails\Factory;
 use Nails\Invoice\Constants;
 use Nails\Invoice\Resource\Invoice;
 use Nails\Invoice\Resource\Tax;
+use stdClass;
 
 class Item extends Entity
 {
@@ -114,21 +116,19 @@ class Item extends Entity
     /**
      * Item constructor.
      *
-     * @param array $mObj
-     *
      * @throws FactoryException
      * @throws CurrencyException
      */
-    public function __construct($mObj = [])
+    public function __construct(self|stdClass|array $resource = [], ?Base $model = null)
     {
-        parent::__construct($mObj);
+        parent::__construct($resource, $model);
 
         // --------------------------------------------------------------------------
 
         //  Currency
         /** @var Currency $oCurrencyService */
         $oCurrencyService = Factory::service('Currency', \Nails\Currency\Constants::MODULE_SLUG);
-        $this->currency   = $oCurrencyService->getByIsoCode($mObj->currency);
+        $this->currency   = $oCurrencyService->getByIsoCode($entity->currency);
 
         // --------------------------------------------------------------------------
 
@@ -138,9 +138,9 @@ class Item extends Entity
             Constants::MODULE_SLUG,
             (object) [
                 'currency' => $this->currency,
-                'sub'      => (int) $mObj->sub_total,
-                'tax'      => (int) $mObj->tax_total,
-                'grand'    => (int) $mObj->grand_total,
+                'sub'      => (int) $entity->sub_total,
+                'tax'      => (int) $entity->tax_total,
+                'grand'    => (int) $entity->grand_total,
             ]
         );
 
@@ -156,7 +156,7 @@ class Item extends Entity
             Constants::MODULE_SLUG,
             (object) [
                 'currency' => $this->currency,
-                'raw'      => (int) $mObj->unit_cost,
+                'raw'      => (int) $entity->unit_cost,
             ]
         );
 
@@ -171,8 +171,8 @@ class Item extends Entity
             'InvoiceItemUnit',
             Constants::MODULE_SLUG,
             (object) [
-                'id'    => $mObj->unit,
-                'label' => $aUnits[$mObj->unit],
+                'id'    => $entity->unit,
+                'label' => $aUnits[$entity->unit],
             ]
         );
 

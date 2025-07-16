@@ -10,8 +10,10 @@
 namespace Nails\Invoice\Resource;
 
 use Nails\Address;
+use Nails\Common\Model\Base;
 use Nails\Common\Resource\Entity;
 use Nails\Factory;
+use stdClass;
 
 /**
  * Class Customer
@@ -74,12 +76,10 @@ class Customer extends Entity
 
     /**
      * Customer constructor.
-     *
-     * @param array $mObj
      */
-    public function __construct($mObj = [])
+    public function __construct(self|stdClass|array $resource = [], ?Base $model = null)
     {
-        parent::__construct($mObj);
+        parent::__construct($resource, $model);
 
         $this->name = trim(sprintf(
             '%s %s',

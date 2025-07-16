@@ -9,7 +9,9 @@
 
 namespace Nails\Invoice\Resource;
 
+use Nails\Common\Model\Base;
 use Nails\Common\Resource\Entity;
+use stdClass;
 
 class Tax extends Entity
 {
@@ -38,12 +40,10 @@ class Tax extends Entity
 
     /**
      * Tax constructor.
-     *
-     * @param array $mObj
      */
-    public function __construct($mObj = [])
+    public function __construct(self|\stdClass|array $entity = [], ?Base $model = null)
     {
-        parent::__construct($mObj);
+        parent::__construct($resource, $model);
         $this->rate_decimal = $this->rate / 100;
     }
 }
