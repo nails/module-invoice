@@ -10,6 +10,7 @@
 namespace Nails\Invoice\Resource;
 
 use Nails\Common\Exception\FactoryException;
+use Nails\Common\Model\Base;
 use Nails\Common\Resource\Entity;
 use Nails\Currency\Exception\CurrencyException;
 use Nails\Currency\Service\Currency;
@@ -17,6 +18,7 @@ use Nails\Factory;
 use Nails\Invoice\Constants;
 use Nails\Invoice\Resource\Refund\Amount;
 use Nails\Invoice\Resource\Refund\Status;
+use stdClass;
 
 class Refund extends Entity
 {
@@ -98,14 +100,12 @@ class Refund extends Entity
     /**
      * Refund constructor.
      *
-     * @param array $mObj
-     *
      * @throws FactoryException
      * @throws CurrencyException
      */
-    public function __construct($mObj = [])
+    public function __construct(self|stdClass|array $resource = [], ?Base = $model = null)
     {
-        parent::__construct($mObj);
+        parent::__construct($resource, $model);
 
         // --------------------------------------------------------------------------
 
@@ -117,8 +117,8 @@ class Refund extends Entity
             'RefundStatus',
             Constants::MODULE_SLUG,
             (object) [
-                'id'    => $mObj->status,
-                'label' => $aStatuses[$mObj->status],
+                'id'    => $entity->status,
+                'label' => $aStatuses[$entity->status],
             ]
         );
 
@@ -127,7 +127,7 @@ class Refund extends Entity
         //  Currency
         /** @var Currency $oCurrency */
         $oCurrency      = Factory::service('Currency', \Nails\Currency\Constants::MODULE_SLUG);
-        $this->currency = $oCurrency->getByIsoCode($mObj->currency);
+        $this->currency = $oCurrency->getByIsoCode($entity->currency);
 
         // --------------------------------------------------------------------------
 
@@ -137,7 +137,7 @@ class Refund extends Entity
             Constants::MODULE_SLUG,
             (object) [
                 'currency' => $this->currency,
-                'raw'      => $mObj->amount,
+                'raw'      => $entity->amount,
             ]
         );
 
@@ -146,7 +146,7 @@ class Refund extends Entity
             Constants::MODULE_SLUG,
             (object) [
                 'currency' => $this->currency,
-                'raw'      => $mObj->fee,
+                'raw'      => $entity->fee,
             ]
         );
     }

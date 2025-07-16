@@ -42,14 +42,12 @@ class UnitCost extends Resource
     /**
      * UnitCost constructor.
      *
-     * @param array $mObj
-     *
      * @throws FactoryException
      * @throws CurrencyException
      */
-    public function __construct($mObj = [])
+    public function __construct(self|\stdClass|array $resource = [])
     {
-        parent::__construct($mObj);
+        parent::__construct($resource);
 
         /** @var Currency $oCurrencyService */
         $oCurrencyService = Factory::service('Currency', \Nails\Currency\Constants::MODULE_SLUG);

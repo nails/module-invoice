@@ -9,11 +9,13 @@
 
 namespace Nails\Invoice\Resource\Invoice;
 
+use Nails\Common\Model\Base;
 use Nails\Common\Resource\Entity;
 use Nails\Email\Constants;
 use Nails\Email\Service\Emailer;
 use Nails\Factory;
 use Nails\Invoice\Resource\Invoice;
+use stdClass;
 
 class Email extends Entity
 {
@@ -70,12 +72,10 @@ class Email extends Entity
 
     /**
      * Email constructor.
-     *
-     * @param array $mObj
      */
-    public function __construct($mObj = [])
+    public function __construct(self|stdClass|array $resource = [], ?Base $model = null)
     {
-        parent::__construct($mObj);
+        parent::__construct($resource, $model);
         if ($this->email) {
             $this->preview_url = siteUrl('email/view/' . $this->email->ref);
         }
@@ -84,7 +84,7 @@ class Email extends Entity
         $oEmailer         = Factory::service('Emailer', Constants::MODULE_SLUG);
         $this->email_type = $oEmailer->getType($this->email_type);
         if (empty($this->email_type)) {
-            $this->email_type = $mObj->email_type;
+            $this->email_type = $entity->email_type;
         }
     }
 }

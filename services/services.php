@@ -202,193 +202,212 @@ return [
         },
     ],
     'resources' => [
-        'Customer'                   => function ($mObj): Resource\Customer {
+        'Customer'                   => function ($resource, $model): Resource\Customer {
             if (class_exists('\App\Invoice\Resource\Customer')) {
-                return new \App\Invoice\Resource\Customer($mObj);
+                return new \App\Invoice\Resource\Customer($resource, $model);
             } else {
-                return new Resource\Customer($mObj);
+                return new Resource\Customer($resource, $model);
             }
         },
-        'Invoice'                    => function ($mObj): Resource\Invoice {
+        'Invoice'                    => function ($resource, $model): Resource\Invoice {
             if (class_exists('\App\Invoice\Resource\Invoice')) {
-                return new \App\Invoice\Resource\Invoice($mObj);
+                return new \App\Invoice\Resource\Invoice($resource, $model);
             } else {
-                return new Resource\Invoice($mObj);
+                return new Resource\Invoice($resource, $model);
             }
         },
-        'InvoiceDataCallback'        => function ($mObj): Resource\Invoice\Data\Callback {
+        'InvoiceDataCallback'        => function ($resource, $model = null): Resource\Invoice\Data\Callback {
+            //  @todo (Pablo 2025-07-15) - this should be a factory
             if (class_exists('\App\Invoice\Resource\Invoice\Data\Callback')) {
-                return new \App\Invoice\Resource\Invoice\Data\Callback($mObj);
+                return new \App\Invoice\Resource\Invoice\Data\Callback($resource);
             } else {
-                return new Resource\Invoice\Data\Callback($mObj);
+                return new Resource\Invoice\Data\Callback($resource);
             }
         },
-        'InvoiceDataPayment'         => function ($mObj): Resource\Invoice\Data\Payment {
+        'InvoiceDataPayment'         => function ($resource, $model = null): Resource\Invoice\Data\Payment {
+            //  @todo (Pablo 2025-07-15) - this should be a factory
             if (class_exists('\App\Invoice\Resource\Invoice\Data\Payment')) {
-                return new \App\Invoice\Resource\Invoice\Data\Payment($mObj);
+                return new \App\Invoice\Resource\Invoice\Data\Payment($resource);
             } else {
-                return new Resource\Invoice\Data\Payment($mObj);
+                return new Resource\Invoice\Data\Payment($resource);
             }
         },
-        'InvoiceEmail'               => function ($mObj): Resource\Invoice\Email {
+        'InvoiceEmail'               => function ($resource, $model): Resource\Invoice\Email {
             if (class_exists('\App\Invoice\Resource\Invoice\Email')) {
-                return new \App\Invoice\Resource\Invoice\Email($mObj);
+                return new \App\Invoice\Resource\Invoice\Email($resource, $model);
             } else {
-                return new Resource\Invoice\Email($mObj);
+                return new Resource\Invoice\Email($resource, $model);
             }
         },
-        'InvoiceItem'                => function ($mObj): Resource\Invoice\Item {
+        'InvoiceItem'                => function ($resource, $model): Resource\Invoice\Item {
             if (class_exists('\App\Invoice\Resource\Invoice\Item')) {
-                return new \App\Invoice\Resource\Invoice\Item($mObj);
+                return new \App\Invoice\Resource\Invoice\Item($resource, $model);
             } else {
-                return new Resource\Invoice\Item($mObj);
+                return new Resource\Invoice\Item($resource, $model);
             }
         },
-        'InvoiceItemDataCallback'    => function ($mObj): Resource\Invoice\Item\Data\Callback {
+        'InvoiceItemDataCallback'    => function ($resource, $model = null): Resource\Invoice\Item\Data\Callback {
+            //  @todo (Pablo 2025-07-15) - this should be a factory
             if (class_exists('\App\Invoice\Resource\Invoice\Item\Data\Callback')) {
-                return new \App\Invoice\Resource\Invoice\Item\Data\Callback($mObj);
+                return new \App\Invoice\Resource\Invoice\Item\Data\Callback($resource);
             } else {
-                return new Resource\Invoice\Item\Data\Callback($mObj);
+                return new Resource\Invoice\Item\Data\Callback($resource);
             }
         },
-        'InvoiceItemTotals'          => function ($mObj): Resource\Invoice\Item\Totals {
+        'InvoiceItemTotals'          => function ($resource, $model = null): Resource\Invoice\Item\Totals {
+            //  @todo (Pablo 2025-07-15) - this should be a factory
             if (class_exists('\App\Invoice\Resource\Invoice\Item\Totals')) {
-                return new \App\Invoice\Resource\Invoice\Item\Totals($mObj);
+                return new \App\Invoice\Resource\Invoice\Item\Totals($resource);
             } else {
-                return new Resource\Invoice\Item\Totals($mObj);
+                return new Resource\Invoice\Item\Totals($resource);
             }
         },
-        'InvoiceItemTotalsFormatted' => function ($mObj): Resource\Invoice\Item\Totals\Formatted {
+        'InvoiceItemTotalsFormatted' => function ($resource, $model = null): Resource\Invoice\Item\Totals\Formatted {
+            //  @todo (Pablo 2025-07-15) - this should be a factory
             if (class_exists('\App\Invoice\Resource\Invoice\Item\Totals\Formatted')) {
-                return new \App\Invoice\Resource\Invoice\Item\Totals\Formatted($mObj);
+                return new \App\Invoice\Resource\Invoice\Item\Totals\Formatted($resource);
             } else {
-                return new Resource\Invoice\Item\Totals\Formatted($mObj);
+                return new Resource\Invoice\Item\Totals\Formatted($resource);
             }
         },
-        'InvoiceItemTotalsRaw'       => function ($mObj): Resource\Invoice\Item\Totals\Raw {
+        'InvoiceItemTotalsRaw'       => function ($resource, $model = null): Resource\Invoice\Item\Totals\Raw {
+            //  @todo (Pablo 2025-07-15) - this should be a factory
             if (class_exists('\App\Invoice\Resource\Invoice\Item\Totals\Raw')) {
-                return new \App\Invoice\Resource\Invoice\Item\Totals\Raw($mObj);
+                return new \App\Invoice\Resource\Invoice\Item\Totals\Raw($resource);
             } else {
-                return new Resource\Invoice\Item\Totals\Raw($mObj);
+                return new Resource\Invoice\Item\Totals\Raw($resource);
             }
         },
-        'InvoiceItemUnit'            => function ($mObj): Resource\Invoice\Item\Unit {
+        'InvoiceItemUnit'            => function ($resource, $model = null): Resource\Invoice\Item\Unit {
+            //  @todo (Pablo 2025-07-15) - this should be a factory
             if (class_exists('\App\Invoice\Resource\Invoice\Item\Unit')) {
-                return new \App\Invoice\Resource\Invoice\Item\Unit($mObj);
+                return new \App\Invoice\Resource\Invoice\Item\Unit($resource);
             } else {
-                return new Resource\Invoice\Item\Unit($mObj);
+                return new Resource\Invoice\Item\Unit($resource);
             }
         },
-        'InvoiceItemUnitCost'        => function ($mObj): Resource\Invoice\Item\UnitCost {
+        'InvoiceItemUnitCost'        => function ($resource, $model = null): Resource\Invoice\Item\UnitCost {
+            //  @todo (Pablo 2025-07-15) - this should be a factory
             if (class_exists('\App\Invoice\Resource\Invoice\Item\UnitCost')) {
-                return new \App\Invoice\Resource\Invoice\Item\UnitCost($mObj);
+                return new \App\Invoice\Resource\Invoice\Item\UnitCost($resource);
             } else {
-                return new Resource\Invoice\Item\UnitCost($mObj);
+                return new Resource\Invoice\Item\UnitCost($resource);
             }
         },
-        'InvoiceState'               => function ($mObj): Resource\Invoice\State {
+        'InvoiceState'               => function ($resource, $model = null): Resource\Invoice\State {
+            //  @todo (Pablo 2025-07-15) - this should be a factory
             if (class_exists('\App\Invoice\Resource\Invoice\State')) {
-                return new \App\Invoice\Resource\Invoice\State($mObj);
+                return new \App\Invoice\Resource\Invoice\State($resource);
             } else {
-                return new Resource\Invoice\State($mObj);
+                return new Resource\Invoice\State($resource);
             }
         },
-        'InvoiceTotals'              => function ($mObj): Resource\Invoice\Totals {
+        'InvoiceTotals'              => function ($resource, $model = null): Resource\Invoice\Totals {
+            //  @todo (Pablo 2025-07-15) - this should be a factory
             if (class_exists('\App\Invoice\Resource\Invoice\Totals')) {
-                return new \App\Invoice\Resource\Invoice\Totals($mObj);
+                return new \App\Invoice\Resource\Invoice\Totals($resource);
             } else {
-                return new Resource\Invoice\Totals($mObj);
+                return new Resource\Invoice\Totals($resource);
             }
         },
-        'InvoiceTotalsFormatted'     => function ($mObj): Resource\Invoice\Totals\Formatted {
+        'InvoiceTotalsFormatted'     => function ($resource, $model = null): Resource\Invoice\Totals\Formatted {
+            //  @todo (Pablo 2025-07-15) - this should be a factory
             if (class_exists('\App\Invoice\Resource\Invoice\Totals\Formatted')) {
-                return new \App\Invoice\Resource\Invoice\Totals\Formatted($mObj);
+                return new \App\Invoice\Resource\Invoice\Totals\Formatted($resource);
             } else {
-                return new Resource\Invoice\Totals\Formatted($mObj);
+                return new Resource\Invoice\Totals\Formatted($resource);
             }
         },
-        'InvoiceTotalsRaw'           => function ($mObj): Resource\Invoice\Totals\Raw {
+        'InvoiceTotalsRaw'           => function ($resource, $model = null): Resource\Invoice\Totals\Raw {
+            //  @todo (Pablo 2025-07-15) - this should be a factory
             if (class_exists('\App\Invoice\Resource\Invoice\Totals\Raw')) {
-                return new \App\Invoice\Resource\Invoice\Totals\Raw($mObj);
+                return new \App\Invoice\Resource\Invoice\Totals\Raw($resource);
             } else {
-                return new Resource\Invoice\Totals\Raw($mObj);
+                return new Resource\Invoice\Totals\Raw($resource);
             }
         },
-        'InvoiceUrls'                => function ($mObj): Resource\Invoice\Urls {
+        'InvoiceUrls'                => function ($resource, $model = null): Resource\Invoice\Urls {
+            //  @todo (Pablo 2025-07-15) - this should be a factory
             if (class_exists('\App\Invoice\Resource\Invoice\Urls')) {
-                return new \App\Invoice\Resource\Invoice\Urls($mObj);
+                return new \App\Invoice\Resource\Invoice\Urls($resource);
             } else {
-                return new Resource\Invoice\Urls($mObj);
+                return new Resource\Invoice\Urls($resource);
             }
         },
-        'Payment'                    => function ($mObj): Resource\Payment {
+        'Payment'                    => function ($resource, $model): Resource\Payment {
             if (class_exists('\App\Invoice\Resource\Payment')) {
-                return new \App\Invoice\Resource\Payment($mObj);
+                return new \App\Invoice\Resource\Payment($resource, $model);
             } else {
-                return new Resource\Payment($mObj);
+                return new Resource\Payment($resource, $model);
             }
         },
-        'PaymentAmount'              => function ($mObj): Resource\Payment\Amount {
+        'PaymentAmount'              => function ($resource, $model = null): Resource\Payment\Amount {
+            //  @todo (Pablo 2025-07-15) - this should be a factory
             if (class_exists('\App\Invoice\Resource\Payment\Amount')) {
-                return new \App\Invoice\Resource\Payment\Amount($mObj);
+                return new \App\Invoice\Resource\Payment\Amount($resource);
             } else {
-                return new Resource\Payment\Amount($mObj);
+                return new Resource\Payment\Amount($resource);
             }
         },
-        'PaymentDataSca'             => function ($mObj): Resource\Payment\Data\Sca {
+        'PaymentDataSca'             => function ($resource, $model = null): Resource\Payment\Data\Sca {
+            //  @todo (Pablo 2025-07-15) - this should be a factory
             if (class_exists('\App\Invoice\Resource\Payment\Data\Sca')) {
-                return new \App\Invoice\Resource\Payment\Data\Sca($mObj);
+                return new \App\Invoice\Resource\Payment\Data\Sca($resource);
             } else {
-                return new Resource\Payment\Data\Sca($mObj);
+                return new Resource\Payment\Data\Sca($resource);
             }
         },
-        'PaymentStatus'              => function ($mObj): Resource\Payment\Status {
+        'PaymentStatus'              => function ($resource, $model = null): Resource\Payment\Status {
+            //  @todo (Pablo 2025-07-15) - this should be a factory
             if (class_exists('\App\Invoice\Resource\Payment\Status')) {
-                return new \App\Invoice\Resource\Payment\Status($mObj);
+                return new \App\Invoice\Resource\Payment\Status($resource);
             } else {
-                return new Resource\Payment\Status($mObj);
+                return new Resource\Payment\Status($resource);
             }
         },
-        'PaymentUrls'                => function ($mObj): Resource\Payment\Urls {
+        'PaymentUrls'                => function ($resource, $model = null): Resource\Payment\Urls {
+            //  @todo (Pablo 2025-07-15) - this should be a factory
             if (class_exists('\App\Invoice\Resource\Payment\Urls')) {
-                return new \App\Invoice\Resource\Payment\Urls($mObj);
+                return new \App\Invoice\Resource\Payment\Urls($resource);
             } else {
-                return new Resource\Payment\Urls($mObj);
+                return new Resource\Payment\Urls($resource);
             }
         },
-        'Refund'                     => function ($mObj): Resource\Refund {
+        'Refund'                     => function ($resource, $model): Resource\Refund {
             if (class_exists('\App\Invoice\Resource\Refund')) {
-                return new \App\Invoice\Resource\Refund($mObj);
+                return new \App\Invoice\Resource\Refund($resource, $model);
             } else {
-                return new Resource\Refund($mObj);
+                return new Resource\Refund($resource, $model);
             }
         },
-        'RefundAmount'               => function ($mObj): Resource\Refund\Amount {
+        'RefundAmount'               => function ($resource, $model = null): Resource\Refund\Amount {
+            //  @todo (Pablo 2025-07-15) - this should be a factory
             if (class_exists('\App\Invoice\Resource\Refund\Amount')) {
-                return new \App\Invoice\Resource\Refund\Amount($mObj);
+                return new \App\Invoice\Resource\Refund\Amount($resource);
             } else {
-                return new Resource\Refund\Amount($mObj);
+                return new Resource\Refund\Amount($resource);
             }
         },
-        'RefundStatus'               => function ($mObj): Resource\Refund\Status {
+        'RefundStatus'               => function ($resource, $model = null): Resource\Refund\Status {
+            //  @todo (Pablo 2025-07-15) - this should be a factory
             if (class_exists('\App\Invoice\Resource\Refund\Status')) {
-                return new \App\Invoice\Resource\Refund\Status($mObj);
+                return new \App\Invoice\Resource\Refund\Status($resource);
             } else {
-                return new Resource\Refund\Status($mObj);
+                return new Resource\Refund\Status($resource);
             }
         },
-        'Source'                     => function ($mObj): Resource\Source {
+        'Source'                     => function ($resource, $model): Resource\Source {
             if (class_exists('\App\Invoice\Resource\Source')) {
-                return new \App\Invoice\Resource\Source($mObj);
+                return new \App\Invoice\Resource\Source($resource, $model);
             } else {
-                return new Resource\Source($mObj);
+                return new Resource\Source($resource, $model);
             }
         },
-        'Tax'                        => function ($mObj): Resource\Tax {
+        'Tax'                        => function ($resource, $model): Resource\Tax {
             if (class_exists('\App\Invoice\Resource\Tax')) {
-                return new \App\Invoice\Resource\Tax($mObj);
+                return new \App\Invoice\Resource\Tax($resource, $model);
             } else {
-                return new Resource\Tax($mObj);
+                return new Resource\Tax($resource, $model);
             }
         },
     ],

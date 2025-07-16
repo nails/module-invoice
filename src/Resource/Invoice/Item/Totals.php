@@ -42,21 +42,19 @@ class Totals extends Resource
     /**
      * Totals constructor.
      *
-     * @param array $mObj
-     *
      * @throws FactoryException
      */
-    public function __construct($mObj = [])
+    public function __construct(self|\stdClass|array $resource = [])
     {
-        parent::__construct($mObj);
+        parent::__construct($resource);
 
         $this->raw = Factory::resource(
             'InvoiceItemTotalsRaw',
             Constants::MODULE_SLUG,
             [
-                'sub'   => (int) $mObj->sub,
-                'tax'   => (int) $mObj->tax,
-                'grand' => (int) $mObj->grand,
+                'sub'   => (int) $resource->sub,
+                'tax'   => (int) $resource->tax,
+                'grand' => (int) $resource->grand,
             ]
         );
 
@@ -65,9 +63,9 @@ class Totals extends Resource
             Constants::MODULE_SLUG,
             [
                 'currency' => $this->currency,
-                'sub'      => (int) $mObj->sub,
-                'tax'      => (int) $mObj->tax,
-                'grand'    => (int) $mObj->grand,
+                'sub'      => (int) $resource->sub,
+                'tax'      => (int) $resource->tax,
+                'grand'    => (int) $resource->grand,
             ]
         );
 

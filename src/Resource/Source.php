@@ -12,6 +12,7 @@ namespace Nails\Invoice\Resource;
 use DateTime;
 use Nails\Address\Resource\Address;
 use Nails\Common\Exception\FactoryException;
+use Nails\Common\Model\Base;
 use Nails\Common\Resource\Date;
 use Nails\Common\Resource\Entity;
 use Nails\Factory;
@@ -121,13 +122,11 @@ class Source extends Entity
     /**
      * Source constructor.
      *
-     * @param array $mObj The data to populate the resource with
-     *
      * @throws FactoryException
      */
-    public function __construct($mObj = [])
+    public function __construct(self|stdClass|array $resource = [], ?Base $model = null)
     {
-        parent::__construct($mObj);
+        parent::__construct($resource, $model);
 
         if ($this->expiry) {
             $this->expiry = Factory::resource('Date', null, ['raw' => $this->expiry]);

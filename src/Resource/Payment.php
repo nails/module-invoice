@@ -11,6 +11,7 @@ namespace Nails\Invoice\Resource;
 
 use Nails\Common\Exception\FactoryException;
 use Nails\Common\Exception\ModelException;
+use Nails\Common\Model\Base;
 use Nails\Common\Resource\Entity;
 use Nails\Currency\Exception\CurrencyException;
 use Nails\Currency\Service\Currency;
@@ -22,6 +23,7 @@ use Nails\Invoice\Resource\Payment\Data\Sca;
 use Nails\Invoice\Resource\Payment\Status;
 use Nails\Invoice\Resource\Payment\Urls;
 use Nails\Invoice\Service\PaymentDriver;
+use stdClass;
 
 /**
  * Class Payment
@@ -196,14 +198,12 @@ class Payment extends Entity
     /**
      * Payment constructor.
      *
-     * @param array $mObj
-     *
      * @throws FactoryException
      * @throws CurrencyException
      */
-    public function __construct($mObj = [])
+    public function __construct(self|stdClass|array $resource = [], ?Base $model = null)
     {
-        parent::__construct($mObj);
+        parent::__construct($resource, $model);
 
         // --------------------------------------------------------------------------
 
@@ -215,8 +215,8 @@ class Payment extends Entity
             'PaymentStatus',
             Constants::MODULE_SLUG,
             (object) [
-                'id'    => $mObj->status,
-                'label' => $aStatuses[$mObj->status],
+                'id'    => $entity->status,
+                'label' => $aStatuses[$entity->status],
             ]
         );
 
@@ -225,14 +225,14 @@ class Payment extends Entity
         //  Driver
         /** @var PaymentDriver $oPaymentDriverService */
         $oPaymentDriverService = Factory::service('PaymentDriver', Constants::MODULE_SLUG);
-        $this->driver          = $oPaymentDriverService->getInstance($mObj->driver);
+        $this->driver          = $oPaymentDriverService->getInstance($entity->driver);
 
         // --------------------------------------------------------------------------
 
         //  Currency
         /** @var Currency $oCurrency */
         $oCurrency      = Factory::service('Currency', \Nails\Currency\Constants::MODULE_SLUG);
-        $this->currency = $oCurrency->getByIsoCode($mObj->currency);
+        $this->currency = $oCurrency->getByIsoCode($entity->currency);
 
         // --------------------------------------------------------------------------
 
@@ -242,7 +242,7 @@ class Payment extends Entity
             Constants::MODULE_SLUG,
             (object) [
                 'currency' => $this->currency,
-                'raw'      => $mObj->amount,
+                'raw'      => $entity->amount,
             ]
         );
 
@@ -251,7 +251,7 @@ class Payment extends Entity
             Constants::MODULE_SLUG,
             (object) [
                 'currency' => $this->currency,
-                'raw'      => $mObj->amount_refunded,
+                'raw'      => $entity->amount_refunded,
             ]
         );
 
@@ -260,7 +260,7 @@ class Payment extends Entity
             Constants::MODULE_SLUG,
             (object) [
                 'currency' => $this->currency,
-                'raw'      => $mObj->fee,
+                'raw'      => $entity->fee,
             ]
         );
 
@@ -269,7 +269,7 @@ class Payment extends Entity
             Constants::MODULE_SLUG,
             (object) [
                 'currency' => $this->currency,
-                'raw'      => $mObj->fee_refunded,
+                'raw'      => $entity->fee_refunded,
             ]
         );
 
@@ -303,9 +303,9 @@ class Payment extends Entity
                 'complete'   => siteUrl('invoice/payment/' . $this->id . '/' . $this->token . '/complete'),
                 'thanks'     => siteUrl('invoice/payment/' . $this->id . '/' . $this->token . '/thanks'),
                 'processing' => siteUrl('invoice/payment/' . $this->id . '/' . $this->token . '/processing'),
-                'success'    => !empty($mObj->url_success) ? siteUrl($mObj->url_success) : null,
-                'error'      => !empty($mObj->url_error) ? siteUrl($mObj->url_error) : null,
-                'cancel'     => !empty($mObj->url_cancel) ? siteUrl($mObj->url_cancel) : null,
+                'success'    => !empty($entity->url_success) ? siteUrl($entity->url_success) : null,
+                'error'      => !empty($entity->url_error) ? siteUrl($entity->url_error) : null,
+                'cancel'     => !empty($entity->url_cancel) ? siteUrl($entity->url_cancel) : null,
             ]
         );
 
