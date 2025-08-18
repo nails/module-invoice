@@ -197,7 +197,7 @@ class Customer extends DefaultController
 
     protected function afterCreateAndEdit(
         $sMode,
-        \Nails\Common\Resource $oNewItem,
+        ?\Nails\Common\Resource $oNewItem,
         ?\Nails\Common\Resource $oOldItem = null
     ): void {
 
