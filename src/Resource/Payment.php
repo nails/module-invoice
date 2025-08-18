@@ -215,8 +215,8 @@ class Payment extends Entity
             'PaymentStatus',
             Constants::MODULE_SLUG,
             (object) [
-                'id'    => $entity->status,
-                'label' => $aStatuses[$entity->status],
+                'id'    => $resource->status,
+                'label' => $aStatuses[$resource->status],
             ]
         );
 
@@ -225,14 +225,14 @@ class Payment extends Entity
         //  Driver
         /** @var PaymentDriver $oPaymentDriverService */
         $oPaymentDriverService = Factory::service('PaymentDriver', Constants::MODULE_SLUG);
-        $this->driver          = $oPaymentDriverService->getInstance($entity->driver);
+        $this->driver          = $oPaymentDriverService->getInstance($resource->driver);
 
         // --------------------------------------------------------------------------
 
         //  Currency
         /** @var Currency $oCurrency */
         $oCurrency      = Factory::service('Currency', \Nails\Currency\Constants::MODULE_SLUG);
-        $this->currency = $oCurrency->getByIsoCode($entity->currency);
+        $this->currency = $oCurrency->getByIsoCode($resource->currency);
 
         // --------------------------------------------------------------------------
 
@@ -242,7 +242,7 @@ class Payment extends Entity
             Constants::MODULE_SLUG,
             (object) [
                 'currency' => $this->currency,
-                'raw'      => $entity->amount,
+                'raw'      => $resource->amount,
             ]
         );
 
@@ -251,7 +251,7 @@ class Payment extends Entity
             Constants::MODULE_SLUG,
             (object) [
                 'currency' => $this->currency,
-                'raw'      => $entity->amount_refunded,
+                'raw'      => $resource->amount_refunded,
             ]
         );
 
@@ -260,7 +260,7 @@ class Payment extends Entity
             Constants::MODULE_SLUG,
             (object) [
                 'currency' => $this->currency,
-                'raw'      => $entity->fee,
+                'raw'      => $resource->fee,
             ]
         );
 
@@ -269,7 +269,7 @@ class Payment extends Entity
             Constants::MODULE_SLUG,
             (object) [
                 'currency' => $this->currency,
-                'raw'      => $entity->fee_refunded,
+                'raw'      => $resource->fee_refunded,
             ]
         );
 
@@ -303,9 +303,9 @@ class Payment extends Entity
                 'complete'   => siteUrl('invoice/payment/' . $this->id . '/' . $this->token . '/complete'),
                 'thanks'     => siteUrl('invoice/payment/' . $this->id . '/' . $this->token . '/thanks'),
                 'processing' => siteUrl('invoice/payment/' . $this->id . '/' . $this->token . '/processing'),
-                'success'    => !empty($entity->url_success) ? siteUrl($entity->url_success) : null,
-                'error'      => !empty($entity->url_error) ? siteUrl($entity->url_error) : null,
-                'cancel'     => !empty($entity->url_cancel) ? siteUrl($entity->url_cancel) : null,
+                'success'    => !empty($resource->url_success) ? siteUrl($resource->url_success) : null,
+                'error'      => !empty($resource->url_error) ? siteUrl($resource->url_error) : null,
+                'cancel'     => !empty($resource->url_cancel) ? siteUrl($resource->url_cancel) : null,
             ]
         );
 

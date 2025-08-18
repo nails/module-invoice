@@ -128,7 +128,7 @@ class Item extends Entity
         //  Currency
         /** @var Currency $oCurrencyService */
         $oCurrencyService = Factory::service('Currency', \Nails\Currency\Constants::MODULE_SLUG);
-        $this->currency   = $oCurrencyService->getByIsoCode($entity->currency);
+        $this->currency   = $oCurrencyService->getByIsoCode($resource->currency);
 
         // --------------------------------------------------------------------------
 
@@ -138,9 +138,9 @@ class Item extends Entity
             Constants::MODULE_SLUG,
             (object) [
                 'currency' => $this->currency,
-                'sub'      => (int) $entity->sub_total,
-                'tax'      => (int) $entity->tax_total,
-                'grand'    => (int) $entity->grand_total,
+                'sub'      => (int) $resource->sub_total,
+                'tax'      => (int) $resource->tax_total,
+                'grand'    => (int) $resource->grand_total,
             ]
         );
 
@@ -156,7 +156,7 @@ class Item extends Entity
             Constants::MODULE_SLUG,
             (object) [
                 'currency' => $this->currency,
-                'raw'      => (int) $entity->unit_cost,
+                'raw'      => (int) $resource->unit_cost,
             ]
         );
 
@@ -171,8 +171,8 @@ class Item extends Entity
             'InvoiceItemUnit',
             Constants::MODULE_SLUG,
             (object) [
-                'id'    => $entity->unit,
-                'label' => $aUnits[$entity->unit],
+                'id'    => $resource->unit,
+                'label' => $aUnits[$resource->unit],
             ]
         );
 
