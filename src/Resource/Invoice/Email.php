@@ -84,7 +84,7 @@ class Email extends Entity
         $oEmailer         = Factory::service('Emailer', Constants::MODULE_SLUG);
         $this->email_type = $oEmailer->getType($this->email_type);
         if (empty($this->email_type)) {
-            $this->email_type = $entity->email_type;
+            $this->email_type = $resource->email_type;
         }
     }
 }
