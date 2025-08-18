@@ -41,7 +41,7 @@ class Tax extends Entity
     /**
      * Tax constructor.
      */
-    public function __construct(self|\stdClass|array $entity = [], ?Base $model = null)
+    public function __construct(self|\stdClass|array $resource = [], ?Base $model = null)
     {
         parent::__construct($resource, $model);
         $this->rate_decimal = $this->rate / 100;

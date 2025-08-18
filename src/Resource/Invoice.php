@@ -255,17 +255,17 @@ class Invoice extends Entity
             'InvoiceState',
             Constants::MODULE_SLUG,
             (object) [
-                'id'    => $entity->state,
-                'label' => $aStates[$entity->state],
+                'id'    => $resource->state,
+                'label' => $aStates[$resource->state],
             ]
         );
 
         // --------------------------------------------------------------------------
 
         //  Dates and DateTimes
-        $this->dated = Factory::resource('Date', null, (object) ['raw' => $entity->dated]);
-        $this->due   = Factory::resource('Date', null, (object) ['raw' => $entity->due]);
-        $this->paid  = Factory::resource('DateTime', null, (object) ['raw' => $entity->paid]);
+        $this->dated = Factory::resource('Date', null, (object) ['raw' => $resource->dated]);
+        $this->due   = Factory::resource('Date', null, (object) ['raw' => $resource->due]);
+        $this->paid  = Factory::resource('DateTime', null, (object) ['raw' => $resource->paid]);
 
         // --------------------------------------------------------------------------
 
@@ -281,7 +281,7 @@ class Invoice extends Entity
             $this->is_overdue   = $this->due->isPast();
         }
 
-        $this->has_processing_payments = $entity->processing_payments > 0;
+        $this->has_processing_payments = $resource->processing_payments > 0;
         unset($this->processing_payments);
 
         // --------------------------------------------------------------------------
@@ -289,7 +289,7 @@ class Invoice extends Entity
         //  Currency
         /** @var \Nails\Currency\Service\Currency $oCurrencyService */
         $oCurrencyService = Factory::service('Currency', \Nails\Currency\Constants::MODULE_SLUG);
-        $this->currency   = $oCurrencyService->getByIsoCode($entity->currency);
+        $this->currency   = $oCurrencyService->getByIsoCode($resource->currency);
 
         // --------------------------------------------------------------------------
 
@@ -299,11 +299,11 @@ class Invoice extends Entity
             Constants::MODULE_SLUG,
             (object) [
                 'currency'   => $this->currency,
-                'sub'        => (int) $entity->sub_total,
-                'tax'        => (int) $entity->tax_total,
-                'grand'      => (int) $entity->grand_total,
-                'paid'       => (int) $entity->paid_total,
-                'processing' => (int) $entity->processing_total,
+                'sub'        => (int) $resource->sub_total,
+                'tax'        => (int) $resource->tax_total,
+                'grand'      => (int) $resource->grand_total,
+                'paid'       => (int) $resource->paid_total,
+                'processing' => (int) $resource->processing_total,
             ]
         );
 

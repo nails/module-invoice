@@ -103,7 +103,7 @@ class Refund extends Entity
      * @throws FactoryException
      * @throws CurrencyException
      */
-    public function __construct(self|stdClass|array $resource = [], ?Base = $model = null)
+    public function __construct(self|stdClass|array $resource = [], ?Base $model = null)
     {
         parent::__construct($resource, $model);
 
@@ -117,8 +117,8 @@ class Refund extends Entity
             'RefundStatus',
             Constants::MODULE_SLUG,
             (object) [
-                'id'    => $entity->status,
-                'label' => $aStatuses[$entity->status],
+                'id'    => $resource->status,
+                'label' => $aStatuses[$resource->status],
             ]
         );
 
@@ -127,7 +127,7 @@ class Refund extends Entity
         //  Currency
         /** @var Currency $oCurrency */
         $oCurrency      = Factory::service('Currency', \Nails\Currency\Constants::MODULE_SLUG);
-        $this->currency = $oCurrency->getByIsoCode($entity->currency);
+        $this->currency = $oCurrency->getByIsoCode($resource->currency);
 
         // --------------------------------------------------------------------------
 
@@ -137,7 +137,7 @@ class Refund extends Entity
             Constants::MODULE_SLUG,
             (object) [
                 'currency' => $this->currency,
-                'raw'      => $entity->amount,
+                'raw'      => $resource->amount,
             ]
         );
 
@@ -146,7 +146,7 @@ class Refund extends Entity
             Constants::MODULE_SLUG,
             (object) [
                 'currency' => $this->currency,
-                'raw'      => $entity->fee,
+                'raw'      => $resource->fee,
             ]
         );
     }
