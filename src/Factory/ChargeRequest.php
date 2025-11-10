@@ -609,7 +609,7 @@ class ChargeRequest extends RequestBase
      * @throws RequestException
      * @throws Exception
      */
-    public function execute(?int $iAmount = null, ?$mCurrency = null): ChargeResponse
+    public function execute(?int $iAmount = null, Currency\Resource\Currency|string|null $mCurrency = null): ChargeResponse
     {
         if ($this->isLocked()) {
             throw new ChargeRequestException('Charge Request is locked and cannot be modified.');
