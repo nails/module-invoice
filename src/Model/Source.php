@@ -112,7 +112,7 @@ class Source extends Base
             'brand'              => getFromArray('brand', $aData),
             'last_four'          => getFromArray('last_four', $aData),
             'expiry'             => getFromArray('expiry', $aData),
-        ]);
+        ], $this);
 
         unset($aData['driver']);
         unset($aData['customer_id']);
