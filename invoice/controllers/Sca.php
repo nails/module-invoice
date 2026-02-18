@@ -75,7 +75,7 @@ class Sca extends Base
             $aPostData    = $oScaResponse->getRedirectPostData();
 
             if (is_null($aPostData)) {
-                redirect($sRedirectUrl);
+                redirect($sRedirectUrl, bAllowExternal: true);
 
             } else {
                 $oView
