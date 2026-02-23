@@ -16,9 +16,9 @@ use Nails\Common\Exception\FactoryException;
 use Nails\Common\Exception\ModelException;
 use Nails\Factory;
 use Nails\Invoice\Constants;
-use Nails\Invoice\Exception\ChargeRequestException;
 use Nails\Invoice\Exception\RequestException;
 use Nails\Invoice\Exception\ScaRequestException;
+use Throwable;
 
 /**
  * Class ScaRequest
@@ -52,11 +52,28 @@ class ScaRequest extends RequestBase
                 );
 
         } else {
-            $oScaResponse = $this->oDriver->sca(
-                $oScaResponse,
-                $this->oPayment->sca_data,
-                $oChargeRequest::compileScaUrl($this->oPayment, $this->oPayment->sca_data)
-            );
+            try {
+                $oScaResponse = $this->oDriver->sca(
+                    $oScaResponse,
+                    $this->oPayment->sca_data,
+                    $oChargeRequest::compileScaUrl($this->oPayment, $this->oPayment->sca_data)
+                );
+            } catch (Throwable $e) {
+                /**
+                 * Something unexpected happened within the driver, we do not want this error reaching
+                 * the user. Ensure that we gracefully handle the exception so the user sees something
+                 * which isn't a 500. Log the real exception for debugging purposes.
+                 */
+                $oScaResponse->setStatusFailed(
+                    $oScaResponse->getErrorMessage(),
+                    $oScaResponse->getErrorCode(),
+                    'Failed to authorise the payment.'
+                );
+                $this->setPaymentFailed(
+                    $oScaResponse->getErrorMessage(),
+                    $oScaResponse->getErrorCode()
+                );
+            }
         }
 
         $oScaResponse->lock();
