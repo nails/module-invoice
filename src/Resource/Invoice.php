@@ -17,7 +17,7 @@ use Nails\Common\Model\Base;
 use Nails\Common\Resource\Date;
 use Nails\Common\Resource\DateTime;
 use Nails\Common\Resource\Entity;
-use Nails\Common\Resource\ExpandableField;
+use Nails\Common\Resource\ExpandableFieldData;
 use Nails\Currency\Exception\CurrencyException;
 use Nails\Currency\Resource\Currency;
 use Nails\Factory;
@@ -215,21 +215,21 @@ class Invoice extends Entity
     /**
      * The invoice items (expandable field)
      *
-     * @var ExpandableField
+     * @var ExpandableFieldData
      */
     public $items;
 
     /**
      * The invoice payments (expandable field)
      *
-     * @var ExpandableField
+     * @var ExpandableFieldData
      */
     public $payments;
 
     /**
      * The invoice refunds (expandable field)
      *
-     * @var ExpandableField
+     * @var ExpandableFieldData
      */
     public $refunds;
 
@@ -424,11 +424,11 @@ class Invoice extends Entity
     /**
      * Returns the invoice's items
      *
-     * @return ExpandableField
+     * @return ExpandableFieldData
      * @throws FactoryException
      * @throws ModelException
      */
-    public function items(): ExpandableField
+    public function items(): ExpandableFieldData
     {
         if (empty($this->items)) {
             $oModel      = Factory::model('Invoice', Constants::MODULE_SLUG);
