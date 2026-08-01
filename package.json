@@ -13,7 +13,7 @@
         "sass": "^1.102",
         "sass-loader": "^17.0",
         "webpack": "^5.109",
-        "webpack-cli": "^7.1"
+        "webpack-cli": "^7.2"
     },
     "dependencies": {
         "jquery.payment": "~3.0.0"
