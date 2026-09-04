@@ -18,6 +18,8 @@ use Nails\Admin\Helper;
 use Nails\Common\Exception\AssetException;
 use Nails\Common\Exception\FactoryException;
 use Nails\Common\Exception\ModelException;
+use Nails\Common\Exception\ValidationException;
+use Nails\Common\Factory\Service\FormValidation\Validator;
 use Nails\Common\Helper\Model\Expand;
 use Nails\Common\Service\Asset;
 use Nails\Common\Service\FormValidation;
@@ -58,6 +60,13 @@ class Invoice extends Base
      * @var Tax
      */
     protected $oTaxModel;
+
+    /**
+     * The validator used by validatePost(), so getObjectFromPost() can read the validated values
+     *
+     * @var Validator|null
+     */
+    protected ?Validator $oPostValidator = null;
 
     // --------------------------------------------------------------------------
 
@@ -570,34 +579,6 @@ class Invoice extends Base
     // --------------------------------------------------------------------------
 
     /**
-     * Form validation cal;back to validate currency selection
-     *
-     * @param string $sCode the currency code
-     *
-     * @return bool
-     * @throws FactoryException
-     */
-    public function _callbackValidCurrency($sCode)
-    {
-        /** @var FormValidation $oFormValidation */
-        $oFormValidation = Factory::service('FormValidation');
-        $oFormValidation->set_message('_callbackValidCurrency', 'Invalid currency.');
-
-        $oCurrency = Factory::service('Currency', Currency\Constants::MODULE_SLUG);
-        $aEnabled  = $oCurrency->getAllEnabled();
-
-        foreach ($aEnabled as $oCurrency) {
-            if ($oCurrency->code === $sCode) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    // --------------------------------------------------------------------------
-
-    /**
      * Make an invoice a draft
      *
      * @throws FactoryException
@@ -769,39 +750,45 @@ class Invoice extends Base
      * @return boolean
      * @throws FactoryException
      */
-    protected function validatePost()
+    protected function validatePost(): bool
     {
         /** @var FormValidation $oFormValidation */
         $oFormValidation = Factory::service('FormValidation');
+        /** @var Currency\Service\Currency $oCurrency */
+        $oCurrency = Factory::service('Currency', Currency\Constants::MODULE_SLUG);
 
-        $aRules = [
-            'ref'             => 'trim',
-            'state'           => 'trim|required',
-            'dated'           => 'trim|required|valid_date',
-            'currency'        => 'trim|required|callback__callbackValidCurrency',
-            'terms'           => 'trim|is_natural',
-            'customer_id'     => 'trim',
-            'additional_text' => 'trim',
-            'items'           => '',
-        ];
+        $aEnabledCodes = array_map(
+            fn($oCurrency) => $oCurrency->code,
+            $oCurrency->getAllEnabled()
+        );
 
-        $aRulesFV = [];
-        foreach ($aRules as $sKey => $sRules) {
-            $aRulesFV[] = [
-                'field' => $sKey,
-                'label' => '',
-                'rules' => $sRules,
-            ];
+        try {
+
+            $this->oPostValidator = $oFormValidation
+                ->buildValidator([
+                    'ref'             => ['trim'],
+                    'state'           => ['trim', FormValidation::RULE_REQUIRED],
+                    'dated'           => ['trim', FormValidation::RULE_REQUIRED, FormValidation::RULE_VALID_DATE],
+                    'currency'        => [
+                        'trim',
+                        FormValidation::RULE_REQUIRED,
+                        function ($sCode) use ($aEnabledCodes) {
+                            if (!in_array($sCode, $aEnabledCodes, true)) {
+                                throw new ValidationException('Invalid currency.');
+                            }
+                        },
+                    ],
+                    'terms'           => ['trim', FormValidation::RULE_IS_NATURAL],
+                    'customer_id'     => ['trim'],
+                    'additional_text' => ['trim'],
+                ])
+                ->run();
+
+            return true;
+
+        } catch (ValidationException $e) {
+            return false;
         }
-
-        $oFormValidation->set_rules($aRulesFV);
-
-        $oFormValidation->set_message('required', lang('fv_required'));
-        $oFormValidation->set_message('valid_date', lang('fv_valid_date'));
-        $oFormValidation->set_message('is_natural', lang('fv_is_natural'));
-        $oFormValidation->set_message('valid_email', lang('fv_valid_email'));
-
-        return $oFormValidation->run(module: $this);
     }
 
     // --------------------------------------------------------------------------
@@ -817,21 +804,24 @@ class Invoice extends Base
         /** @var Input $oInput */
         $oInput = Factory::service('Input');
         /** @var Uri $oUri */
-        $oUri  = Factory::service('Uri');
+        $oUri = Factory::service('Uri');
+
+        //  Prefer the validated (trimmed) values when validation has run
+        $aPost = $this->oPostValidator?->getValidatedData() ?? $oInput->post();
+
         $aData = [
-            'ref'             => $oInput->post('ref') ?: null,
-            'state'           => $oInput->post('state') ?: null,
-            'dated'           => $oInput->post('dated') ?: null,
-            'currency'        => $oInput->post('currency') ?: null,
-            'terms'           => (int) $oInput->post('terms') ?: 0,
-            'customer_id'     => (int) $oInput->post('customer_id') ?: null,
-            'additional_text' => $oInput->post('additional_text') ?: null,
+            'ref'             => ($aPost['ref'] ?? null) ?: null,
+            'state'           => ($aPost['state'] ?? null) ?: null,
+            'dated'           => ($aPost['dated'] ?? null) ?: null,
+            'terms'           => (int) ($aPost['terms'] ?? 0) ?: 0,
+            'customer_id'     => (int) ($aPost['customer_id'] ?? 0) ?: null,
+            'additional_text' => ($aPost['additional_text'] ?? null) ?: null,
             'items'           => [],
-            'currency'        => $oInput->post('currency'),
+            'currency'        => $aPost['currency'] ?? null,
         ];
 
-        if ($oInput->post('items')) {
-            foreach ($oInput->post('items') as $aItem) {
+        if (!empty($aPost['items'])) {
+            foreach ($aPost['items'] as $aItem) {
 
                 //  @todo convert to pence using a model
                 $aData['items'][] = [
