@@ -22,7 +22,6 @@ use Nails\Common\Exception\ValidationException;
 use Nails\Common\Factory\Service\FormValidation\Validator;
 use Nails\Common\Helper\Model\Expand;
 use Nails\Common\Service\Asset;
-use Nails\Common\Service\FormValidation;
 use Nails\Common\Service\Input;
 use Nails\Common\Service\Uri;
 use Nails\Currency;
@@ -31,6 +30,7 @@ use Nails\Invoice\Constants;
 use Nails\Invoice\Model;
 use Nails\Invoice\Model\Invoice\Item;
 use Nails\Invoice\Model\Tax;
+use Nails\Invoice\Validator\Invoice as InvoiceValidator;
 use stdClass;
 
 /**
@@ -752,38 +752,12 @@ class Invoice extends Base
      */
     protected function validatePost(): bool
     {
-        /** @var FormValidation $oFormValidation */
-        $oFormValidation = Factory::service('FormValidation');
-        /** @var Currency\Service\Currency $oCurrency */
-        $oCurrency = Factory::service('Currency', Currency\Constants::MODULE_SLUG);
-
-        $aEnabledCodes = array_map(
-            fn($oCurrency) => $oCurrency->code,
-            $oCurrency->getAllEnabled()
-        );
+        /** @var Input $oInput */
+        $oInput = Factory::service('Input');
 
         try {
 
-            $this->oPostValidator = $oFormValidation
-                ->buildValidator([
-                    'ref'             => ['trim'],
-                    'state'           => ['trim', FormValidation::RULE_REQUIRED],
-                    'dated'           => ['trim', FormValidation::RULE_REQUIRED, FormValidation::RULE_VALID_DATE],
-                    'currency'        => [
-                        'trim',
-                        FormValidation::RULE_REQUIRED,
-                        function ($sCode) use ($aEnabledCodes) {
-                            if (!in_array($sCode, $aEnabledCodes, true)) {
-                                throw new ValidationException('Invalid currency.');
-                            }
-                        },
-                    ],
-                    'terms'           => ['trim', FormValidation::RULE_IS_NATURAL],
-                    'customer_id'     => ['trim'],
-                    'additional_text' => ['trim'],
-                ])
-                ->run();
-
+            $this->oPostValidator = (new InvoiceValidator())->run($oInput->post());
             return true;
 
         } catch (ValidationException $e) {
