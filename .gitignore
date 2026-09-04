@@ -10,3 +10,4 @@ node_modules/jquery.payment/*
 !node_modules/jquery.payment/lib
 node_modules/jquery.payment/lib/*
 !node_modules/jquery.payment/lib/jquery.payment.min.js
+/.phpunit.result.cache
