@@ -36,6 +36,7 @@
         "nails/skin-invoice-classic": "dev-develop"
     },
     "require-dev": {
+        "nails/module-find-replace": "dev-develop",
         "phpunit/phpunit": "^12.0",
         "phpstan/phpstan": "^2.0"
     },
