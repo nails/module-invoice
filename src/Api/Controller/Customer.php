@@ -47,7 +47,7 @@ class Customer extends CrudController
                 }
                 break;
 
-            case static::ACTION_READ;
+            case static::ACTION_READ:
                 if (!userHasPermission('admin:invoice:customer:manage')) {
                     throw new ApiException(
                         'You are not authorised to access this resource.',
@@ -56,7 +56,7 @@ class Customer extends CrudController
                 }
                 break;
 
-            case static::ACTION_UPDATE;
+            case static::ACTION_UPDATE:
                 if (!userHasPermission('admin:invoice:customer:edit')) {
                     throw new ApiException(
                         'You are not authorised to access this resource.',
@@ -65,7 +65,7 @@ class Customer extends CrudController
                 }
                 break;
 
-            case static::ACTION_DELETE;
+            case static::ACTION_DELETE:
                 if (!userHasPermission('admin:invoice:customer:delete')) {
                     throw new ApiException(
                         'You are not authorised to access this resource.',
