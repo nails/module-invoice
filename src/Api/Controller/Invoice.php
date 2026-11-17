@@ -48,7 +48,7 @@ class Invoice extends CrudController
                 }
                 break;
 
-            case static::ACTION_READ;
+            case static::ACTION_READ:
                 if (!userHasPermission(\Nails\Invoice\Admin\Permission\Customer\Browse::class)) {
                     throw new ApiException(
                         'You are not authorised to access this resource.',
@@ -57,7 +57,7 @@ class Invoice extends CrudController
                 }
                 break;
 
-            case static::ACTION_UPDATE;
+            case static::ACTION_UPDATE:
                 if (!userHasPermission(\Nails\Invoice\Admin\Permission\Customer\Edit::class)) {
                     throw new ApiException(
                         'You are not authorised to access this resource.',
@@ -66,7 +66,7 @@ class Invoice extends CrudController
                 }
                 break;
 
-            case static::ACTION_DELETE;
+            case static::ACTION_DELETE:
                 if (!userHasPermission(\Nails\Invoice\Admin\Permission\Customer\Delete::class)) {
                     throw new ApiException(
                         'You are not authorised to access this resource.',
