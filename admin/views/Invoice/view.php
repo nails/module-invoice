@@ -68,7 +68,7 @@ $iColWidth   = [
                             <tr>
                                 <td class="header">Organisation</td>
                                 <td>
-                                    <?=anchor('admin/invoice/customer/edit/' . $invoice->customer->id, $invoice->customer->label)?>
+                                    <?=anchor(\Nails\Invoice\Admin\Controller\Customer::url('edit/' . $invoice->customer->id), $invoice->customer->label)?>
                                 </td>
                             </tr>
                             <tr>
@@ -270,7 +270,7 @@ $iColWidth   = [
         </div>
         <?php
 
-        if (userHasPermission('admin:invoice:payment:view') && $invoice->payments->count > 0) {
+        if (userHasPermission(\Nails\Invoice\Admin\Permission\Payment\View::class) && $invoice->payments->count > 0) {
 
             ?>
             <div class="table-responsive">
@@ -392,12 +392,12 @@ $iColWidth   = [
                                     <?php
 
                                     echo anchor(
-                                        'admin/invoice/payment/view/' . $oPayment->id,
+                                        \Nails\Invoice\Admin\Controller\Payment::url('view/' . $oPayment->id),
                                         'View',
                                         'class="btn btn-xs btn-default"'
                                     );
 
-                                    if ($oPayment->is_refundable && userHasPermission('admin:invoice:payment:refund')) {
+                                    if ($oPayment->is_refundable && userHasPermission(\Nails\Invoice\Admin\Permission\Payment\Refund::class)) {
                                         ?>
                                         <button class="btn btn-xs btn-danger js-invoice-refund pull-right"
                                                 data-id="<?=$oPayment->id?>"
@@ -439,7 +439,7 @@ $iColWidth   = [
         </div>
         <?php
 
-        if (userHasPermission('admin:invoice:payment:view') && $invoice->refunds->count > 0) {
+        if (userHasPermission(\Nails\Invoice\Admin\Permission\Payment\View::class) && $invoice->refunds->count > 0) {
 
             ?>
             <div class="table-responsive">

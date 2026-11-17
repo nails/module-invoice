@@ -10,7 +10,7 @@
  * @link
  */
 
-namespace Nails\Admin\Invoice;
+namespace Nails\Invoice\Admin\Controller;
 
 use Nails\Admin\Controller\Base;
 use Nails\Admin\Factory\Nav;
@@ -26,6 +26,7 @@ use Nails\Common\Service\Input;
 use Nails\Common\Service\Uri;
 use Nails\Currency;
 use Nails\Factory;
+use Nails\Invoice\Admin\Permission;
 use Nails\Invoice\Constants;
 use Nails\Invoice\Model;
 use Nails\Invoice\Model\Invoice\Item;
@@ -36,7 +37,7 @@ use stdClass;
 /**
  * Class Invoice
  *
- * @package Nails\Admin\Invoice
+ * @package Nails\Invoice\Admin\Controller
  */
 class Invoice extends Base
 {
@@ -78,7 +79,7 @@ class Invoice extends Base
      */
     public static function announce(): Nav|array|null
     {
-        if (userHasPermission('admin:invoice:invoice:manage')) {
+        if (userHasPermission(Permission\Invoice\Browse::class)) {
             /** @var Nav $oNavGroup */
             $oNavGroup = Factory::factory('Nav', \Nails\Admin\Constants::MODULE_SLUG)
                 ->setLabel('Invoices &amp; Payments')
@@ -86,25 +87,6 @@ class Invoice extends Base
                 ->addAction('Manage Invoices', 'index', [], 0);
         }
         return $oNavGroup ?? null;
-    }
-
-    // --------------------------------------------------------------------------
-
-    /**
-     * Returns an array of extra permissions for this controller
-     *
-     * @return array
-     */
-    public static function permissions(): array
-    {
-        $aPermissions = parent::permissions();
-
-        $aPermissions['manage'] = 'Can manage invoices';
-        $aPermissions['create'] = 'Can create invoices';
-        $aPermissions['edit']   = 'Can edit invoices';
-        $aPermissions['delete'] = 'Can delete invoices';
-
-        return $aPermissions;
     }
 
     // --------------------------------------------------------------------------
@@ -136,7 +118,7 @@ class Invoice extends Base
      */
     public function index()
     {
-        if (!userHasPermission('admin:invoice:invoice:manage')) {
+        if (!userHasPermission(Permission\Invoice\Browse::class)) {
             unauthorised();
         }
 
@@ -268,9 +250,9 @@ class Invoice extends Base
         $this->data['pagination'] = Helper::paginationObject($iPage, $iPerPage, $iTotalRows);
 
         //  Add a header button
-        if (userHasPermission('admin:invoice:invoice:create')) {
+        if (userHasPermission(Permission\Invoice\Create::class)) {
             Helper::addHeaderButton(
-                'admin/invoice/invoice/create',
+                static::url('create'),
                 'Create Invoice'
             );
         }
@@ -291,7 +273,7 @@ class Invoice extends Base
      */
     public function create()
     {
-        if (!userHasPermission('admin:invoice:invoice:create')) {
+        if (!userHasPermission(Permission\Invoice\Create::class)) {
             unauthorised();
         }
 
@@ -315,7 +297,7 @@ class Invoice extends Base
 
                     $this->oUserFeedback->success('Invoice created successfully.');
 
-                    redirect('admin/invoice/invoice');
+                    redirect(static::url());
 
                 } else {
                     $this->oUserFeedback->error('Failed to create invoice. ' . $this->oInvoiceModel->lastError());
@@ -405,7 +387,7 @@ class Invoice extends Base
      */
     public function edit()
     {
-        if (!userHasPermission('admin:invoice:invoice:edit')) {
+        if (!userHasPermission(Permission\Invoice\Edit::class)) {
             unauthorised();
         }
 
@@ -452,9 +434,9 @@ class Invoice extends Base
                     $this->oUserFeedback->success('Invoice was saved successfully.');
 
                     if ($oInvoice->state->id === $oModel::STATE_DRAFT) {
-                        redirect('admin/invoice/invoice/edit/' . $oInvoice->id);
+                        redirect(static::url('edit/' . $oInvoice->id));
                     } else {
-                        redirect('admin/invoice/invoice');
+                        redirect(static::url());
                     }
 
                 } else {
@@ -544,7 +526,7 @@ class Invoice extends Base
      */
     public function view()
     {
-        if (!userHasPermission('admin:invoice:invoice:edit')) {
+        if (!userHasPermission(Permission\Invoice\Edit::class)) {
             unauthorised();
         }
 
@@ -586,7 +568,7 @@ class Invoice extends Base
      */
     public function make_draft()
     {
-        if (!userHasPermission('admin:invoice:invoice:edit')) {
+        if (!userHasPermission(Permission\Invoice\Edit::class)) {
             unauthorised();
         }
 
@@ -616,7 +598,7 @@ class Invoice extends Base
             $this->oUserFeedback->error('Invoice failed to update invoice. ' . $this->oInvoiceModel->lastError());
         }
 
-        redirect('admin/invoice/invoice/edit/' . $oInvoice->id);
+        redirect(static::url('edit/' . $oInvoice->id));
     }
 
     // --------------------------------------------------------------------------
@@ -629,7 +611,7 @@ class Invoice extends Base
      */
     public function write_off()
     {
-        if (!userHasPermission('admin:invoice:invoice:edit')) {
+        if (!userHasPermission(Permission\Invoice\Edit::class)) {
             unauthorised();
         }
 
@@ -659,7 +641,7 @@ class Invoice extends Base
             $this->oUserFeedback->error('Failed to write off invoice. ' . $this->oInvoiceModel->lastError());
         }
 
-        redirect('admin/invoice/invoice');
+        redirect(static::url());
     }
 
     // --------------------------------------------------------------------------
@@ -672,7 +654,7 @@ class Invoice extends Base
      */
     public function delete()
     {
-        if (!userHasPermission('admin:invoice:invoice:delete')) {
+        if (!userHasPermission(Permission\Invoice\Delete::class)) {
             unauthorised();
         }
 
@@ -696,7 +678,7 @@ class Invoice extends Base
             $this->oUserFeedback->error('Invoice failed to delete. ' . $this->oInvoiceModel->lastError());
         }
 
-        redirect('admin/invoice/invoice');
+        redirect(static::url());
     }
 
     // --------------------------------------------------------------------------
@@ -709,7 +691,7 @@ class Invoice extends Base
      */
     public function resend()
     {
-        if (!userHasPermission('admin:invoice:invoice:manage')) {
+        if (!userHasPermission(Permission\Invoice\Browse::class)) {
             unauthorised();
         }
 
@@ -738,7 +720,7 @@ class Invoice extends Base
         if (!empty($sReferrer)) {
             redirect($sReferrer);
         } else {
-            redirect('admin/invoice/invoice');
+            redirect(static::url());
         }
     }
 

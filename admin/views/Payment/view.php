@@ -37,7 +37,7 @@ $oRefundModel = Factory::model('Refund', Constants::MODULE_SLUG);
                         </tr>
                         <tr>
                             <td class="header">Invoice</td>
-                            <td><?=anchor('admin/invoice/invoice/view/' . $payment->invoice->id, $payment->invoice->ref)?></td>
+                            <td><?=anchor(\Nails\Invoice\Admin\Controller\Invoice::url('view/' . $payment->invoice->id), $payment->invoice->ref)?></td>
                         </tr>
                         <tr>
                             <td class="header">Source</td>
@@ -162,7 +162,7 @@ $oRefundModel = Factory::model('Refund', Constants::MODULE_SLUG);
         <div class="panel-heading">
             <strong>Associated Refunds</strong>
             <?php
-            if ($payment->is_refundable && userHasPermission('admin:invoice:payment:refund')) {
+            if ($payment->is_refundable && userHasPermission(\Nails\Invoice\Admin\Permission\Payment\Refund::class)) {
                 ?>
                 <button class="btn btn-xs btn-danger js-invoice-refund pull-right"
                         data-id="<?=$payment->id?>"

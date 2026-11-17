@@ -34,7 +34,7 @@ use Nails\Invoice\Model;
                         </tr>
                         <tr>
                             <td class="header">Invoice</td>
-                            <td><?=anchor('admin/invoice/invoice/view/' . $refund->payment->invoice->id, $refund->payment->invoice->ref)?></td>
+                            <td><?=anchor(\Nails\Invoice\Admin\Controller\Invoice::url('view/' . $refund->payment->invoice->id), $refund->payment->invoice->ref)?></td>
                         </tr>
                         <tr>
                             <td class="header">Reason</td>
