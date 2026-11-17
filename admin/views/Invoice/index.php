@@ -145,11 +145,11 @@ $oInvoiceModel = Factory::model('Invoice', Constants::MODULE_SLUG);
                                         <?php
                                         /** @var \Nails\Invoice\Resource\Payment $oPayment */
                                         foreach ($oInvoice->payments->data as $oPayment) {
-                                            echo userHasPermission('admin:invoice:payment:view')
+                                            echo userHasPermission(\Nails\Invoice\Admin\Permission\Payment\View::class)
                                                 ? sprintf(
                                                     '<li style="%s"><a href="%s" class="fancybox">%s<small>%s — %s</small></a></li>',
                                                     $sStylesInline,
-                                                    siteUrl('admin/invoice/payment/view/' . $oPayment->id),
+                                                    \Nails\Invoice\Admin\Controller\Payment::url('view/' . $oPayment->id),
                                                     $oPayment->ref,
                                                     $oPayment->amount->formatted,
                                                     $oPayment->status->label
@@ -175,11 +175,11 @@ $oInvoiceModel = Factory::model('Invoice', Constants::MODULE_SLUG);
                                         <?php
                                         /** @var \Nails\Invoice\Resource\Refund $oRefund */
                                         foreach ($oInvoice->refunds->data as $oRefund) {
-                                            echo userHasPermission('admin:invoice:payment:view')
+                                            echo userHasPermission(\Nails\Invoice\Admin\Permission\Payment\View::class)
                                                 ? sprintf(
                                                     '<li style="%s"><a href="%s" class="fancybox">%s<small>%s — %s</small></a></li>',
                                                     $sStylesInline,
-                                                    siteUrl('admin/invoice/refund/view/' . $oRefund->id),
+                                                    \Nails\Invoice\Admin\Controller\Refund::url('view/' . $oRefund->id),
                                                     $oRefund->ref,
                                                     $oRefund->amount->formatted,
                                                     $oRefund->status->label
@@ -239,12 +239,12 @@ $oInvoiceModel = Factory::model('Invoice', Constants::MODULE_SLUG);
                             <?php
                             //  So that the "no actions" text shows when cell is empty
                             echo '<td class="actions">';
-                            if (userHasPermission('admin:invoice:invoice:edit')) {
+                            if (userHasPermission(\Nails\Invoice\Admin\Permission\Invoice\Edit::class)) {
 
                                 if ($oInvoice->state->id == $oInvoiceModel::STATE_DRAFT) {
 
                                     echo anchor(
-                                        'admin/invoice/invoice/edit/' . $oInvoice->id,
+                                        \Nails\Invoice\Admin\Controller\Invoice::url('edit/' . $oInvoice->id),
                                         lang('action_edit'),
                                         'class="btn btn-xs btn-primary"'
                                     );
@@ -256,7 +256,7 @@ $oInvoiceModel = Factory::model('Invoice', Constants::MODULE_SLUG);
                                 ])) {
 
                                     echo anchor(
-                                        'admin/invoice/invoice/view/' . $oInvoice->id,
+                                        \Nails\Invoice\Admin\Controller\Invoice::url('view/' . $oInvoice->id),
                                         lang('action_view'),
                                         'class="btn btn-xs btn-default"'
                                     );
@@ -270,7 +270,7 @@ $oInvoiceModel = Factory::model('Invoice', Constants::MODULE_SLUG);
                                 } else {
 
                                     echo anchor(
-                                        'admin/invoice/invoice/view/' . $oInvoice->id,
+                                        \Nails\Invoice\Admin\Controller\Invoice::url('view/' . $oInvoice->id),
                                         lang('action_view'),
                                         'class="btn btn-xs btn-default"'
                                     );
@@ -298,13 +298,13 @@ $oInvoiceModel = Factory::model('Invoice', Constants::MODULE_SLUG);
 
                                     if (empty($aValidPayments)) {
                                         echo anchor(
-                                            'admin/invoice/invoice/make_draft/' . $oInvoice->id,
+                                            \Nails\Invoice\Admin\Controller\Invoice::url('make_draft/' . $oInvoice->id),
                                             'Make Draft',
                                             'class="btn btn-xs btn-warning"'
                                         );
                                         if (in_array($oInvoice->state->id, [$oInvoiceModel::STATE_OPEN])) {
                                             echo anchor(
-                                                'admin/invoice/invoice/write_off/' . $oInvoice->id,
+                                                \Nails\Invoice\Admin\Controller\Invoice::url('write_off/' . $oInvoice->id),
                                                 'Write Off',
                                                 'class="btn btn-xs btn-danger confirm" data-body="Write invoice ' . $oInvoice->ref . ' off?"'
                                             );
@@ -313,16 +313,16 @@ $oInvoiceModel = Factory::model('Invoice', Constants::MODULE_SLUG);
                                 }
                             }
 
-                            if (userHasPermission('admin:invoice:invoice:delete') && $oInvoice->state->id == $oInvoiceModel::STATE_DRAFT) {
+                            if (userHasPermission(\Nails\Invoice\Admin\Permission\Invoice\Delete::class) && $oInvoice->state->id == $oInvoiceModel::STATE_DRAFT) {
                                 echo anchor(
-                                    'admin/invoice/invoice/delete/' . $oInvoice->id,
+                                    \Nails\Invoice\Admin\Controller\Invoice::url('delete/' . $oInvoice->id),
                                     lang('action_delete'),
                                     'class="btn btn-xs btn-danger confirm" data-body="You cannot undo this action"'
                                 );
                             }
 
                             echo anchor(
-                                'admin/invoice/invoice/resend/' . $oInvoice->id,
+                                \Nails\Invoice\Admin\Controller\Invoice::url('resend/' . $oInvoice->id),
                                 'Re-send',
                                 'class="btn btn-xs btn-default"'
                             );

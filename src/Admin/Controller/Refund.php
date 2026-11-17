@@ -10,7 +10,7 @@
  * @link
  */
 
-namespace Nails\Admin\Invoice;
+namespace Nails\Invoice\Admin\Controller;
 
 use Nails\Admin\Controller\Base;
 use Nails\Admin\Controller\DefaultController;
@@ -24,13 +24,14 @@ use Nails\Common\Service\Input;
 use Nails\Common\Service\UserFeedback;
 use Nails\Common\Service\Uri;
 use Nails\Factory;
+use Nails\Invoice\Admin\Permission;
 use Nails\Invoice\Constants;
 use Nails\Invoice\Service\RefundDriver;
 
 /**
  * Class Refund
  *
- * @package Nails\Admin\Invoice
+ * @package Nails\Invoice\Admin\Controller
  */
 class Refund extends DefaultController
 {
@@ -98,9 +99,9 @@ class Refund extends DefaultController
         $this->aConfig['INDEX_HEADER_BUTTONS'] = array_merge(
             $this->aConfig['INDEX_HEADER_BUTTONS'],
             array_filter([
-                userHasPermission('admin:invoice:invoice:create')
+                userHasPermission(Permission\Invoice\Create::class)
                     ? [
-                    'url'   => siteUrl('admin/invoice/invoice/create'),
+                    'url'   => Invoice::url('create'),
                     'label' => 'Create Invoice',
                 ] : null,
             ])
@@ -150,7 +151,7 @@ class Refund extends DefaultController
         $this->aConfig['INDEX_FIELDS']['Invoice'] = function (\Nails\Invoice\Resource\Refund $oRefund) {
             return sprintf(
                 '<a href="%s">%s</a><small>%s</small>',
-                siteUrl('admin/invoice/invoice/view/' . $oRefund->payment->invoice->id),
+                Invoice::url('view/' . $oRefund->payment->invoice->id),
                 $oRefund->payment->invoice->ref,
                 $oRefund->payment->invoice->state->label,
             );
@@ -159,7 +160,7 @@ class Refund extends DefaultController
         $this->aConfig['INDEX_FIELDS']['Payment'] = function (\Nails\Invoice\Resource\Refund $oRefund) {
             return sprintf(
                 '<a href="%s">%s</a><small>%s</small>',
-                siteUrl('admin/invoice/payment/view/' . $oRefund->payment->id),
+                Payment::url('view/' . $oRefund->payment->id),
                 $oRefund->payment->ref,
                 $oRefund->payment->status->label,
             );
@@ -179,46 +180,29 @@ class Refund extends DefaultController
             $this->aConfig['INDEX_ROW_BUTTONS'],
             [
                 [
-                    'url'     => siteUrl('admin/invoice/refund/view/{{id}}'),
+                    'url'     => static::url('view/{{id}}'),
                     'label'   => 'View',
                     'class'   => 'btn-default',
                     'enabled' => function () {
-                        return userHasPermission('admin:invoice:refund:view');
+                        return userHasPermission(Permission\Refund\View::class);
                     },
                 ],
                 [
-                    'url'     => siteUrl('admin/invoice/payment/view/{{payment.id}}'),
+                    'url'     => Payment::url('view/{{payment.id}}'),
                     'label'   => 'View Payment',
                     'class'   => 'btn-default',
                     'enabled' => function () {
-                        return userHasPermission('admin:invoice:payment:view');
+                        return userHasPermission(Permission\Payment\View::class);
                     },
                 ],
                 [
-                    'url'     => siteUrl('admin/invoice/invoice/view/{{payment.invoice.id}}'),
+                    'url'     => Invoice::url('view/{{payment.invoice.id}}'),
                     'label'   => 'View Invoice',
                     'class'   => 'btn-default',
                     'enabled' => function () {
-                        return userHasPermission('admin:invoice:invoice:edit');
+                        return userHasPermission(Permission\Invoice\Edit::class);
                     },
                 ],
-            ]
-        );
-    }
-
-    // --------------------------------------------------------------------------
-
-    /**
-     * Returns an array of extra permissions for this controller
-     *
-     * @return array
-     */
-    public static function permissions(): array
-    {
-        return array_merge(
-            parent::permissions(),
-            [
-                'view' => 'Can view refund details',
             ]
         );
     }
@@ -267,7 +251,7 @@ class Refund extends DefaultController
      */
     public function view()
     {
-        if (!userHasPermission('admin:invoice:refund:view')) {
+        if (!userHasPermission(Permission\Refund\View::class)) {
             unauthorised();
         }
 

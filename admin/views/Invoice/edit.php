@@ -5,7 +5,7 @@ use Nails\Invoice\Constants;
 
 ?>
 <div class="group-invoice invoice edit">
-    <?=form_open($customer_id ? 'admin/invoice/invoice/create?customer_id=' . $customer_id : null)?>
+    <?=form_open($customer_id ? \Nails\Invoice\Admin\Controller\Invoice::url('create?customer_id=' . $customer_id) : null)?>
     <fieldset>
         <legend>Details</legend>
         <?php
