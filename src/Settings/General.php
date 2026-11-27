@@ -2,6 +2,7 @@
 
 namespace Nails\Invoice\Settings;
 
+use Nails\Invoice\Admin\Permission;
 use Nails\Invoice\Service\Invoice\Skin;
 use Nails\Invoice\Service\PaymentDriver;
 use Nails\Common\Helper\Form;
@@ -41,9 +42,9 @@ class General implements Interfaces\Component\Settings
     /**
      * @inheritDoc
      */
-    public function getPermissions(): array
+    public function getPermission(): string
     {
-        return [];
+        return Permission\Settings\General::class;
     }
 
     // --------------------------------------------------------------------------
